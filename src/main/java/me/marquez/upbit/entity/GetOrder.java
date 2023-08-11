@@ -5,6 +5,15 @@ import java.util.List;
 
 public class GetOrder {
     /**
+     * @param uuid          주문 UUID
+     * @param identifier    조회용 사용자 지정 값
+     */
+    public record Request(
+            String uuid,
+            String identifier
+    ) {}
+    
+    /**
      * @param uuid             주문의 고유 아이디
      * @param side             주문 종류
      * @param ord_type         주문 방식
