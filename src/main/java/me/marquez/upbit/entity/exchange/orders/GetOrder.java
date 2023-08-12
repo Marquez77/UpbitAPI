@@ -1,16 +1,25 @@
-package me.marquez.upbit.entity;
+package me.marquez.upbit.entity.exchange.orders;
+
+import lombok.Builder;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 개별 주문 조회
+ * 주문 UUID 를 통해 개별 주문 건을 조회한다.
+ */
 public class GetOrder {
     /**
+     * `uuid` 혹은 `identifier` 둘 중 하나의 값이 반드시 포함되어야 합니다.
      * @param uuid          주문 UUID
      * @param identifier    조회용 사용자 지정 값
      */
+    @Builder
     public record Request(
-            String uuid,
-            String identifier
+            @Nullable String uuid,
+            @Nullable String identifier
     ) {}
     
     /**

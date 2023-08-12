@@ -1,13 +1,20 @@
-package me.marquez.upbit.entity;
+package me.marquez.upbit.entity.exchange.orders;
 
+import lombok.Builder;
+import lombok.NonNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * 주문 가능 정보
+ * 마켓별 주문 가능 정보를 확인한다.
+ */
 public class GetOrdersChance {
     /**
      * @param market    마켓 ID
      */
+    @Builder
     public record Request(
-            String market
+            @NonNull String market
     ) {}
 
     /**

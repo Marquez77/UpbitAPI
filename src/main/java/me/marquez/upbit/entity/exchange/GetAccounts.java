@@ -1,5 +1,9 @@
-package me.marquez.upbit.entity;
+package me.marquez.upbit.entity.exchange;
 
+/**
+ * 전체 계좌 조회
+ * 내가 보유한 자산 리스트를 보여줍니다.
+ */
 public class GetAccounts {
 
     /**

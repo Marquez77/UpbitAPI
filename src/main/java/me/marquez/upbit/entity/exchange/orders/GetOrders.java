@@ -1,10 +1,15 @@
-package me.marquez.upbit.entity;
+package me.marquez.upbit.entity.exchange.orders;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.*;
+import me.marquez.upbit.entity.enums.OrderBy;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
 
+/**
+ * 주문 리스트 조회
+ * 주문 리스트를 조회한다.
+ */
 public class GetOrders {
     /**
      * @param market        마켓 아이디
@@ -22,15 +27,16 @@ public class GetOrders {
      * @param limit         요청 개수, default: 100
      * @param order_by      정렬 방식
      */
+    @Builder
     public record Request(
-            String market,
-            String[] uuids,
-            String[] identifiers,
-            State state,
-            State[] states,
-            int page,
-            int limit,
-            OrderBy order_by
+            @Nullable String market,
+            @Nullable String[] uuids,
+            @Nullable String[] identifiers,
+            @Nullable State state,
+            @Nullable State[] states,
+            @Nullable int page,
+            @Nullable int limit,
+            @Nullable OrderBy order_by
     ) {
         @AllArgsConstructor
         public enum State {
@@ -51,18 +57,6 @@ public class GetOrders {
              */
             CANCEL("cancel");
             private final String state;
-        }
-        @AllArgsConstructor
-        public enum OrderBy {
-            /**
-             * 오름차순
-             */
-            ASC("asc"),
-            /**
-             * 내림차순 (default)
-             */
-            DESC("desc");
-            private final String order_by;
         }
     }
 

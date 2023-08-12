@@ -1,33 +1,25 @@
-package me.marquez.upbit.entity;
+package me.marquez.upbit.entity.exchange.orders;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
 
-public class PostOrders {
+/**
+ * 주문 취소 접수
+ * 주문 UUID를 통해 해당 주문에 대한 취소 접수를 한다.
+ */
+public class DeleteOrder {
+    /**
+     * `uuid` 혹은 `identifier` 둘 중 하나의 값이 반드시 포함되어야 합니다.
+     * @param uuid          취소할 주문의 UUID
+     * @param identifier    조회용 사용자 지정 값
+     */
+    @Builder
     public record Request(
-            //TO-DO 2023-08-11: 필수, 선택 요소들 @Nullable, @NonNull(또는 @NotNull) 붙이기
-            String market,
-            Side side,
-            double volume,
-            double price,
-            OrderType ord_type,
-            String identifier
-    ) {
-        @AllArgsConstructor
-        public enum Side {
-            BID("bid"),
-            ASK("ask");
-            private final String side;
-        }
-        @AllArgsConstructor
-        public enum OrderType {
-            LIMIT("limit"),
-            PRICE("price"),
-            MARKET("market");
-            private final String ord_type;
-        }
-    }
+            @Nullable String uuid,
+            @Nullable String identifier
+    ) {}
 
     /**
      * @param uuid              주문의 고유 아이디
@@ -35,8 +27,8 @@ public class PostOrders {
      * @param ord_type          주문 방식
      * @param price             주문 당시 화폐 가격
      * @param state             주문 상태
-     * @param market            마켓의 유일키
-     * @param crated_at         주문 생성 시간
+     * @param market            마켓의 유일 키
+     * @param created_at        주문 생성 시간
      * @param volume            사용자가 입력한 주문 양
      * @param remaining_volume  체결 후 남은 주문 양
      * @param reserved_fee      수수료로 예약된 비용
@@ -53,7 +45,7 @@ public class PostOrders {
             double price,
             String state,
             String market,
-            Date crated_at,
+            Date created_at,
             double volume,
             double remaining_volume,
             double reserved_fee,

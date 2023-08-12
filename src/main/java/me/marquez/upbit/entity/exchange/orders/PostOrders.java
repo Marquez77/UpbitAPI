@@ -1,16 +1,40 @@
-package me.marquez.upbit.entity;
+package me.marquez.upbit.entity.exchange.orders;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NonNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
 
-public class DeleteOrder {
-    /**
-     * @param uuid          취소할 주문의 UUID
-     * @param identifier    조회용 사용자 지정 값
-     */
+/**
+ * 주문하기
+ * 주문 요청을 한다.
+ */
+public class PostOrders {
+    @Builder
     public record Request(
-            String uuid,
-            String identifier
-    ) {}
+            @NonNull String market,
+            @NonNull Side side,
+            @NonNull double volume,
+            @NonNull double price,
+            @NonNull OrderType ord_type,
+            @Nullable String identifier
+    ) {
+        @AllArgsConstructor
+        public enum Side {
+            BID("bid"),
+            ASK("ask");
+            private final String side;
+        }
+        @AllArgsConstructor
+        public enum OrderType {
+            LIMIT("limit"),
+            PRICE("price"),
+            MARKET("market");
+            private final String ord_type;
+        }
+    }
 
     /**
      * @param uuid              주문의 고유 아이디
@@ -18,8 +42,8 @@ public class DeleteOrder {
      * @param ord_type          주문 방식
      * @param price             주문 당시 화폐 가격
      * @param state             주문 상태
-     * @param market            마켓의 유일 키
-     * @param created_at        주문 생성 시간
+     * @param market            마켓의 유일키
+     * @param crated_at         주문 생성 시간
      * @param volume            사용자가 입력한 주문 양
      * @param remaining_volume  체결 후 남은 주문 양
      * @param reserved_fee      수수료로 예약된 비용
@@ -36,7 +60,7 @@ public class DeleteOrder {
             double price,
             String state,
             String market,
-            Date created_at,
+            Date crated_at,
             double volume,
             double remaining_volume,
             double reserved_fee,

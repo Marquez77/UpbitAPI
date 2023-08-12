@@ -4,6 +4,11 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.google.gson.*;
+import org.apache.commons.collections4.MultiSet;
+import org.apache.commons.collections4.MultiValuedMap;
+import org.apache.commons.collections4.keyvalue.MultiKey;
+import org.apache.commons.collections4.map.MultiKeyMap;
+import org.apache.commons.collections4.map.MultiValueMap;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -17,10 +22,7 @@ import java.net.URISyntaxException;
 import java.net.http.HttpRequest;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class UpbitRestAPI {
 	private static final String SERVER_URL = "https://api.upbit.com/";
@@ -34,37 +36,29 @@ public class UpbitRestAPI {
 				  GET/POST/DELETE
 	=============================================
 	*/
-	private String makeQueryString(HashMap<String, String> params) {
+	private String makeQueryString(MultiValuedMap<String, String> params) {
 		ArrayList<String> queryElements = new ArrayList<>();
-		for(Map.Entry<String, String> entity : params.entrySet()) {
+		for(Map.Entry<String, String> entity : params.entries()) {
 			queryElements.add(entity.getKey() + "=" + entity.getValue());
 		}
 		return String.join("&", queryElements.toArray(String[]::new));
 	}
 
-	private static enum Method {
+	private enum Method {
 		DELETE, GET, POST, PUT;
 	}
 	private HttpUriRequest makeRequest(Method method, String uri, String body) throws URISyntaxException {
 		HttpRequest.Builder builder = HttpRequest.newBuilder();
 		builder.uri(new URI(uri));
 		switch(method) {
-			case GET -> {
-				builder.GET();
-			}
-			case POST -> {
-				builder.POST(HttpRequest.BodyPublishers.ofString(body));
-			}
-			case DELETE -> {
-				builder.DELETE();
-			}
-			case PUT -> {
-				builder.PUT(HttpRequest.BodyPublishers.ofString(body));
-			}
+			case DELETE -> 	builder.DELETE();
+			case GET -> 	builder.GET();
+			case POST -> 	builder.POST(HttpRequest.BodyPublishers.ofString(body));
+			case PUT -> 	builder.PUT(HttpRequest.BodyPublishers.ofString(body));
 		}
 		return (HttpUriRequest) builder.build();
 	}
-	private String request(Method method, String accessKey, String secretKey, String endpoint, HashMap<String, String> params) throws Exception{
+	private String request(Method method, String accessKey, String secretKey, String endpoint, MultiValuedMap<String, String> params) throws Exception{
 		String queryString = params != null ? makeQueryString(params) : null;
 
 		HttpClient client = HttpClientBuilder.create().build();
@@ -97,27 +91,27 @@ public class UpbitRestAPI {
 		return EntityUtils.toString(entity, "UTF-8");
 	}
 
-	private String get(String accessKey, String secretKey, String endpoint, HashMap<String, String> params) throws Exception{
+	private String get(String accessKey, String secretKey, String endpoint, MultiValuedMap<String, String> params) throws Exception{
 		return request(Method.GET, accessKey, secretKey, endpoint, params);
 	}
 	private String get(String accessKey, String secretKey, String endpoint) throws Exception{
 		return get(accessKey, secretKey, endpoint, null);
 	}
-	private String get(String endpoint, HashMap<String, String> params) throws Exception{
+	private String get(String endpoint, MultiValuedMap<String, String> params) throws Exception{
 		return get(null, null, endpoint, params);
 	}
 	private String get(String endpoint) throws Exception{
 		return get(null, null, endpoint, null);
 	}
 
-	private String post(String accessKey, String secretKey, String endpoint, HashMap<String, String> params) throws Exception{
+	private String post(String accessKey, String secretKey, String endpoint, MultiValuedMap<String, String> params) throws Exception{
 		return request(Method.POST, accessKey, secretKey, endpoint, params);
 	}
 	private String post(String accessKey, String secretKey, String endpoint) throws Exception{
 		return post(accessKey, secretKey, endpoint, null);
 	}
 
-	private String delete(String accessKey, String secretKey, String endpoint, HashMap<String, String> params) throws Exception{
+	private String delete(String accessKey, String secretKey, String endpoint, MultiValuedMap<String, String> params) throws Exception{
 		return request(Method.DELETE, accessKey, secretKey, endpoint, params);
 	}
 	private String delete(String accessKey, String secretKey, String endpoint) throws Exception{
