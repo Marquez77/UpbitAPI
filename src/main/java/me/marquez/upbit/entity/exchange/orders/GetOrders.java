@@ -2,9 +2,11 @@ package me.marquez.upbit.entity.exchange.orders;
 
 import lombok.*;
 import me.marquez.upbit.entity.enums.OrderBy;
+import me.marquez.upbit.entity.enums.OrderEnums;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * 주문 리스트 조회
@@ -28,37 +30,17 @@ public class GetOrders {
      * @param order_by      정렬 방식
      */
     @Builder
+    @ToString
     public record Request(
             @Nullable String market,
-            @Nullable String[] uuids,
-            @Nullable String[] identifiers,
-            @Nullable State state,
-            @Nullable State[] states,
+            @Nullable UUID[] uuids,
+            @Nullable UUID[] identifiers,
+            @Nullable OrderEnums.State state,
+            @Nullable OrderEnums.State[] states,
             @Nullable int page,
             @Nullable int limit,
             @Nullable OrderBy order_by
-    ) {
-        @AllArgsConstructor
-        public enum State {
-            /**
-             * 체결 대기 (default)
-             */
-            WAIT("wait"),
-            /**
-             * 예약 주문 대기
-             */
-            WATCH("watch"),
-            /**
-             * 전체 체결 완료
-             */
-            DONE("done"),
-            /**
-             * 주문 취소
-             */
-            CANCEL("cancel");
-            private final String state;
-        }
-    }
+    ) {}
 
     /**
      * @param uuid              주문의 고유 아이디
@@ -77,12 +59,13 @@ public class GetOrders {
      * @param executed_volume   체결된 양
      * @param trades_count      해당 주문에 걸린 체결 수
      */
+    @ToString
     public record Response(
-            String uuid,
-            String side,
-            String ord_type,
+            UUID uuid,
+            OrderEnums.Side side,
+            OrderEnums.OrderType ord_type,
             double price,
-            String state,
+            OrderEnums.State state,
             String market,
             Date crated_at,
             double volume,

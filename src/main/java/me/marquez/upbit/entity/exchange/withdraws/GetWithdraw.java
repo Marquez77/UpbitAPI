@@ -1,10 +1,12 @@
 package me.marquez.upbit.entity.exchange.withdraws;
 
 import lombok.Builder;
+import lombok.ToString;
 import me.marquez.upbit.entity.enums.WithdrawEnums;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * 개별 출금 조회
@@ -17,8 +19,9 @@ public class GetWithdraw {
      * @param currency  Currency 코드
      */
     @Builder
+    @ToString
     public record Request(
-            @Nullable String uuid,
+            @Nullable UUID uuid,
             @Nullable String txid,
             @Nullable String currency
     ) {}
@@ -36,9 +39,10 @@ public class GetWithdraw {
      * @param fee               출금 수수료
      * @param transaction_type  출금 유형
      */
+    @ToString
     public record Response(
             String type,
-            String uuid,
+            UUID uuid,
             String currency,
             String net_type,
             String txid,

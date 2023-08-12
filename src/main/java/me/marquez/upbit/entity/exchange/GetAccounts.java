@@ -1,5 +1,7 @@
 package me.marquez.upbit.entity.exchange;
 
+import lombok.ToString;
+
 /**
  * 전체 계좌 조회
  * 내가 보유한 자산 리스트를 보여줍니다.
@@ -14,6 +16,7 @@ public class GetAccounts {
      * @param avg_buy_price_modified 매수 평균가 수정 여부
      * @param unit_currency          평단가 기준 화폐
      */
+    @ToString
     public record Response(
             String currency,
             double balance,

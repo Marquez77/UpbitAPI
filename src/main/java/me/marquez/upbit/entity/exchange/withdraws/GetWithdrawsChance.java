@@ -1,5 +1,7 @@
 package me.marquez.upbit.entity.exchange.withdraws;
 
+import lombok.ToString;
+
 /**
  * 출금 가능 정보
  * 해당 통화의 가능한 출금 정보를 확인한다.
@@ -11,6 +13,7 @@ public class GetWithdrawsChance {
      * @param account           사용자의 계좌 정보
      * @param withdraw_limit    출금 제약 정보
      */
+    @ToString
     public record Response(
             MemberLevel member_level,
             Currency currency,
@@ -27,6 +30,7 @@ public class GetWithdrawsChance {
          * @param locked                    계정 보호 상태
          * @param wallet_locked             출금 보호 상태
          */
+        @ToString
         public record MemberLevel(
                 int security_level,
                 int fee_level,
@@ -45,6 +49,7 @@ public class GetWithdrawsChance {
          * @param wallet_state      해당 화폐의 지갑 상태
          * @param wallet_support    해당 화폐가 지원하는 입출금 정보
          */
+        @ToString
         public record Currency(
                 String code,
                 double withdraw_fee,
@@ -61,6 +66,7 @@ public class GetWithdrawsChance {
          * @param avg_buy_price_modified    매수평균가 수정 여부
          * @param unit_currency             평단가 기준 화폐
          */
+        @ToString
         public record Account(
                 String currency,
                 double balance,
@@ -80,6 +86,7 @@ public class GetWithdrawsChance {
          * @param fixed                 출금 금액/수량 소수점 자리 수
          * @param can_withdraw          출금 지원 여부
          */
+        @ToString
         public record WithdrawLimit(
                 String currency,
                 double minimum,

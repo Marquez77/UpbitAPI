@@ -1,9 +1,12 @@
 package me.marquez.upbit.entity.exchange.orders;
 
 import lombok.Builder;
+import lombok.ToString;
+import me.marquez.upbit.entity.enums.OrderEnums;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * 주문 취소 접수
@@ -16,9 +19,10 @@ public class DeleteOrder {
      * @param identifier    조회용 사용자 지정 값
      */
     @Builder
+    @ToString
     public record Request(
-            @Nullable String uuid,
-            @Nullable String identifier
+            @Nullable UUID uuid,
+            @Nullable UUID identifier
     ) {}
 
     /**
@@ -38,12 +42,13 @@ public class DeleteOrder {
      * @param executed_volume   체결된 양
      * @param trades_count      해당 주문에 걸린 체결 수
      */
+    @ToString
     public record Response(
-            String uuid,
-            String side,
-            String ord_type,
+            UUID uuid,
+            OrderEnums.Side side,
+            OrderEnums.OrderType ord_type,
             double price,
-            String state,
+            OrderEnums.State state,
             String market,
             Date created_at,
             double volume,

@@ -1,11 +1,13 @@
 package me.marquez.upbit.entity.exchange.withdraws;
 
 import lombok.Builder;
+import lombok.ToString;
 import me.marquez.upbit.entity.enums.OrderBy;
 import me.marquez.upbit.entity.enums.WithdrawEnums;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * 출금 리스트 조회
@@ -21,10 +23,11 @@ public class GetWithdraws {
      * @param order_by  정렬
      */
     @Builder
+    @ToString
     public record Request(
             @Nullable String currency,
-            @Nullable String state,
-            @Nullable String[] uuids,
+            @Nullable WithdrawEnums.State state,
+            @Nullable UUID[] uuids,
             @Nullable String[] txids,
             @Nullable int limit,
             @Nullable int page,
@@ -44,9 +47,10 @@ public class GetWithdraws {
      * @param fee               출금 수수료
      * @param transaction_type  출금 유형
      */
+    @ToString
     public record Response(
             String type,
-            String uuid,
+            UUID uuid,
             String currency,
             String net_type,
             String txid,

@@ -3,9 +3,12 @@ package me.marquez.upbit.entity.exchange.orders;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NonNull;
+import lombok.ToString;
+import me.marquez.upbit.entity.enums.OrderEnums;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * 주문하기
@@ -13,28 +16,15 @@ import java.util.Date;
  */
 public class PostOrders {
     @Builder
+    @ToString
     public record Request(
             @NonNull String market,
-            @NonNull Side side,
+            @NonNull OrderEnums.Side side,
             @NonNull double volume,
             @NonNull double price,
-            @NonNull OrderType ord_type,
+            @NonNull OrderEnums.OrderType ord_type,
             @Nullable String identifier
-    ) {
-        @AllArgsConstructor
-        public enum Side {
-            BID("bid"),
-            ASK("ask");
-            private final String side;
-        }
-        @AllArgsConstructor
-        public enum OrderType {
-            LIMIT("limit"),
-            PRICE("price"),
-            MARKET("market");
-            private final String ord_type;
-        }
-    }
+    ) {}
 
     /**
      * @param uuid              주문의 고유 아이디
@@ -53,12 +43,13 @@ public class PostOrders {
      * @param executed_volume   체결된 양
      * @param trades_count      해당 주문에 걸린 체결 수
      */
+    @ToString
     public record Response(
-            String uuid,
-            String side,
-            String ord_type,
+            UUID uuid,
+            OrderEnums.Side side,
+            OrderEnums.OrderType ord_type,
             double price,
-            String state,
+            OrderEnums.State state,
             String market,
             Date crated_at,
             double volume,
