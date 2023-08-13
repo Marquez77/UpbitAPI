@@ -1,4 +1,4 @@
-package me.marquez.upbit.entity.exchange;
+package me.marquez.upbit.entity.exchange.accounts;
 
 import lombok.ToString;
 
