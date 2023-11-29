@@ -7,7 +7,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
 
+/**
+ * 월(Month) 캔들
+ */
 public class GetCandlesMonths {
+
+    public static final String END_POINT = "v1/candles/months";
 
     /**
      * @param market    마켓 코드 (ex. KRW-BTC)

@@ -7,7 +7,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
 
+/**
+ * 주(Week) 캔들
+ */
 public class GetCandlesWeeks {
+
+    public static final String END_POINT = "v1/candles/weeks";
 
     /**
      * @param market    마켓 코드 (ex. KRW-BTC)

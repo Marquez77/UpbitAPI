@@ -11,6 +11,9 @@ import lombok.ToString;
  * 등록은 업비트 웹 > [MY] > [Open API 관리] > [디지털 자산 출금주소 관리] 페이지에서 진행하실 수 있습니다.
  */
 public class GetWithdrawsCoinAddresses {
+
+    public static final String END_POINT = "v1/withdraws/coin_addresses";
+
     /**
      * 네트워크 타입(net_type) vs. 네트워크 명(network_name)
      *

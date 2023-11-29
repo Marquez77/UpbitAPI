@@ -13,6 +13,9 @@ import java.util.UUID;
  * 주문 리스트를 조회한다.
  */
 public class GetOrders {
+
+    public static final String END_POINT = "v1/orders";
+
     /**
      * @param market        마켓 아이디
      * @param uuids         주문 UUID의 목록

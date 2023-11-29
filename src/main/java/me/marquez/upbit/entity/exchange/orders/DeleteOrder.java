@@ -13,6 +13,9 @@ import java.util.UUID;
  * 주문 UUID를 통해 해당 주문에 대한 취소 접수를 한다.
  */
 public class DeleteOrder {
+
+    public static final String END_POINT = "v1/order";
+
     /**
      * `uuid` 혹은 `identifier` 둘 중 하나의 값이 반드시 포함되어야 합니다.
      * @param uuid          취소할 주문의 UUID

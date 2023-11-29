@@ -1,5 +1,6 @@
 package me.marquez.upbit.entity.exchange.withdraws;
 
+import lombok.NonNull;
 import lombok.ToString;
 
 /**
@@ -7,6 +8,18 @@ import lombok.ToString;
  * 해당 통화의 가능한 출금 정보를 확인한다.
  */
 public class GetWithdrawsChance {
+
+    public static final String END_POINT = "v1/withdraws/chance";
+
+    /**
+     * @param currency  Currency symbol
+     * @param net_type  출금 네트워크
+     */
+    public record Request(
+            @NonNull String currency,
+            @NonNull String net_type
+    ) {}
+
     /**
      * @param member_level      사용자의 보안등급 정보
      * @param currency          화폐 정보

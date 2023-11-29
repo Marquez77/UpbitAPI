@@ -14,6 +14,9 @@ import java.util.UUID;
  * 주문 UUID 를 통해 개별 주문 건을 조회한다.
  */
 public class GetOrder {
+
+    public static final String END_POINT = "v1/order";
+
     /**
      * `uuid` 혹은 `identifier` 둘 중 하나의 값이 반드시 포함되어야 합니다.
      * @param uuid          주문 UUID

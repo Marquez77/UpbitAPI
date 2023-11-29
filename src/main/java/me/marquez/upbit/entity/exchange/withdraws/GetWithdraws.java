@@ -13,6 +13,9 @@ import java.util.UUID;
  * 출금 리스트 조회
  */
 public class GetWithdraws {
+
+    public static final String END_POINT = "v1/withdraws";
+
     /**
      * @param currency  Currency 코드
      * @param state     출금 상태

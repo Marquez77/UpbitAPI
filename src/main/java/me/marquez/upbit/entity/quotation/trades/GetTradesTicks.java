@@ -10,7 +10,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
 
+/**
+ * 최근 체결 내역
+ */
 public class GetTradesTicks {
+
+    public static final String END_POINT = "v1/trades/ticks";
 
     /**
      * @param market    마켓 코드 (ex. KRW-BTC)
@@ -39,6 +44,7 @@ public class GetTradesTicks {
      * @param change_price          변화량
      * @param ask_bid               매도/매수
      * @param sequential_id         체결 번호(Unique)
+     *                              sequential_id 필드는 체결의 유일성 판단을 위한 근거로 쓰일 수 있습니다. 하지만 체결의 순서를 보장하지는 못합니다.
      */
     @ToString
     public record Response(

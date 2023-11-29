@@ -7,7 +7,13 @@ import lombok.ToString;
 import me.marquez.upbit.entity.date.HourMinuteSecond;
 import me.marquez.upbit.entity.date.YearMonthDay;
 
+/**
+ * 현재가 정보
+ * 요청 당시 종목의 스냅샷을 반환한다.
+ */
 public class GetTicker {
+
+    public static final String END_POINT = "v1/ticker";
 
     /**
      * @param markets   반점으로 구분되는 마켓 코드 (ex. KRW-BTC, BTC-ETH)
@@ -44,6 +50,8 @@ public class GetTicker {
      * @param lowest_52_week_price      52주 신저가
      * @param lowest_52_week_date       52주 신저가 달성일
      * @param timestamp                 타임스탬프
+     *
+     * 위 응답의 change, change_price, change_rate, signed_change_price, signed_change_rate 필드들은 전일종가 대비 값입니다.
      */
     @ToString
     public record Response(

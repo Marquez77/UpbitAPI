@@ -8,6 +8,8 @@ import lombok.ToString;
  */
 public class GetAccounts {
 
+    public static final String END_POINT = "v1/accounts";
+
     /**
      * @param currency               화폐를 의미 하는 영문 대문자 코드
      * @param balance                주문 가능 금액/수량

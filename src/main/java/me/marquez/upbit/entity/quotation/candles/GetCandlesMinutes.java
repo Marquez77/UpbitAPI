@@ -1,12 +1,31 @@
 package me.marquez.upbit.entity.quotation.candles;
 
+import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.ToString;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
 
+/**
+ * 분(Minute) 캔들
+ */
 public class GetCandlesMinutes {
+
+    public static final String END_POINT = "v1/candles/minutes";
+    @AllArgsConstructor
+    public enum Unit {
+        MINUTE(1),
+        MINUTE_3(3),
+        MINUTE_5(5),
+        MINUTE_15(15),
+        MINUTE_10(10),
+        HALF_HOUR(30),
+        HOUR(60),
+        HOUR_4(240);
+
+        private final int unit;
+    }
 
     /**
      * @param market    마켓 코드 (ex. KRW-BTC)

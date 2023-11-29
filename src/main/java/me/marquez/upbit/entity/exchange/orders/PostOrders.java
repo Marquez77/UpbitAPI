@@ -16,6 +16,8 @@ import java.util.UUID;
  */
 public class PostOrders {
 
+    public static final String END_POINT = "v1/orders";
+
     /**
      * @param market        마켓 ID (필수)
      * @param side          주문 종류 (필수)

@@ -15,21 +15,30 @@ import java.util.UUID;
  * 원화 출금을 요청한다. 등록된 출금 계좌로 출금된다.
  */
 public class PostWithdrawsKRW {
+
+    public static final String END_POINT = "v1/withdraws/krw";
+
     /**
      * @param amount            출금액
-     * @param two_factor_type   2차 인증 수단 (기본 값 : KAKAO_PAY)
+     * @param two_factor_type   2차 인증 수단
      */
     @Builder
     public record Request(
             @NonNull double amount,
-            @Nullable TwoFactorType two_factor_type
+            @NonNull TwoFactorType two_factor_type
     ) {
         @AllArgsConstructor
         public enum TwoFactorType {
             /**
+             * 카카오 인증
+             */
+            KAKAO("kakao"),
+
+            /**
              * 카카오 페이 인증
              */
-            KAKAO_PAY("kakao_pay"),
+            @Deprecated KAKAO_PAY("kakao_pay"),
+
             /**
              * 네이버 인증
              */

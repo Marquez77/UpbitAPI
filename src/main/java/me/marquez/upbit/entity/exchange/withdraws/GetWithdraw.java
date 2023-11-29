@@ -13,6 +13,9 @@ import java.util.UUID;
  * 출금 UUID를 통해 개별 출금 정보를 조회한다.
  */
 public class GetWithdraw {
+
+    public static final String END_POINT = "v1/withdraw";
+
     /**
      * @param uuid      출금 UUID
      * @param txid      출금 TXID

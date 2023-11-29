@@ -21,6 +21,9 @@ import java.util.UUID;
  * 업비트 회원의 주소가 아닌 주소로 바로출금을 요청하는 경우, 출금이 정상적으로 수행되지 않습니다. 반드시 주소를 확인 후 출금을 진행하시기 바랍니다.
  */
 public class PostWithdrawsCoin {
+
+    public static final String END_POINT = "v1/withdraws/coin";
+
     /**
      * @param currency              Currency 코드
      * @param net_type              출금 네트워크

@@ -11,6 +11,9 @@ import org.jetbrains.annotations.Nullable;
  * 마켓별 주문 가능 정보를 확인한다.
  */
 public class GetOrdersChance {
+
+    public static final String END_POINT = "v1/orders/chance";
+
     /**
      * @param market    마켓 ID
      */
