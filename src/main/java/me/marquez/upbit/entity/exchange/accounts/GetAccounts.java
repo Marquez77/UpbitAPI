@@ -18,7 +18,6 @@ public class GetAccounts {
      * @param avg_buy_price_modified 매수 평균가 수정 여부
      * @param unit_currency          평단가 기준 화폐
      */
-    @ToString
     public record Response(
             String currency,
             double balance,

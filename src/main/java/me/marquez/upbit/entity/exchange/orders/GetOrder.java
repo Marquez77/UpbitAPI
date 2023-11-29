@@ -23,7 +23,6 @@ public class GetOrder {
      * @param identifier    조회용 사용자 지정 값
      */
     @Builder
-    @ToString
     public record Request(
             @Nullable UUID uuid,
             @Nullable UUID identifier
@@ -47,7 +46,6 @@ public class GetOrder {
      * @param trades_count     해당 주문에 걸린 체결 수
      * @param trades           체결
      */
-    @ToString
     public record Response(
             UUID uuid,
             OrderEnums.Side side,

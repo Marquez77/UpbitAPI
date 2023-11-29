@@ -29,12 +29,11 @@ public class GetMarketAll {
      * @param market_warning    유의 종목 여부
      *                          '유의 종목' 지정 여부에 대해 반환하며, '주의 종목' 지정 여부는 지원하지 않습니다.
      */
-    @ToString
     public record Response(
             @NonNull String market,
             @NonNull String korean_name,
             @NonNull String english_name,
-            @NonNull String market_warning
+            @Nullable MarketWarning market_warning
     ) {
         @AllArgsConstructor
         public enum MarketWarning {

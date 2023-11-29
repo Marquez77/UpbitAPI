@@ -18,7 +18,6 @@ public class GetOrdersChance {
      * @param market    마켓 ID
      */
     @Builder
-    @ToString
     public record Request(
             @NonNull String market
     ) {}
@@ -30,7 +29,6 @@ public class GetOrdersChance {
      * @param bid_account   매수 시 사용하는 화페의 계좌 상태
      * @param ask_account   매도 시 사용하는 화폐의 계좌 상태
      */
-    @ToString
     public record Response(
             double bid_fee,
             double ask_fee,
@@ -49,7 +47,6 @@ public class GetOrdersChance {
          * @param max_total     최대 매도/매수 금액
          * @param state         마켓의 운영 상태
          */
-        @ToString
         public record MarketInfo(
                 String id,
                 String name,
@@ -66,7 +63,6 @@ public class GetOrdersChance {
              * @param price_unit    주문 금액 단위
              * @param min_total     최소 매도/매수 금액
              */
-            @ToString
             public record Restrictions(
                     String currency,
                     @Nullable String price_unit,
@@ -82,7 +78,6 @@ public class GetOrdersChance {
          * @param avg_buy_price_modified    매수 평균가 수정 여부
          * @param unit_currency             평단가 기준 화폐
          */
-        @ToString
         public record Account(
                 String currency,
                 double balance,

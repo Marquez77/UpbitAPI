@@ -51,7 +51,6 @@ public class GetCandlesMinutes {
      * @param candle_acc_trade_volume   누적 거래량
      * @param unit                      분 단위(유닛)
      */
-    @ToString
     public record Response(
             String market,
             Date candle_date_time_utc,

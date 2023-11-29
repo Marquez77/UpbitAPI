@@ -22,7 +22,6 @@ public class GetWithdraw {
      * @param currency  Currency 코드
      */
     @Builder
-    @ToString
     public record Request(
             @Nullable UUID uuid,
             @Nullable String txid,
@@ -42,7 +41,6 @@ public class GetWithdraw {
      * @param fee               출금 수수료
      * @param transaction_type  출금 유형
      */
-    @ToString
     public record Response(
             String type,
             UUID uuid,

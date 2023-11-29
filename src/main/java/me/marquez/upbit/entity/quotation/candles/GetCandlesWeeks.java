@@ -39,7 +39,6 @@ public class GetCandlesWeeks {
      * @param candle_acc_trade_volume   누적 거래량
      * @param first_day_of_period       캔들 기간의 가장 첫 날
      */
-    @ToString
     public record Response(
             String market,
             Date candle_date_time_utc,

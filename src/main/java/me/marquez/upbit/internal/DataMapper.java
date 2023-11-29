@@ -1,4 +1,4 @@
-package me.marquez.upbit;
+package me.marquez.upbit.internal;
 
 import com.google.gson.*;
 import me.marquez.upbit.entity.date.HourMinuteSecond;
@@ -8,14 +8,13 @@ import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
-import java.time.YearMonth;
 
-public class ParameterMapper {
+public class DataMapper {
 
-    private static final Gson gson;
+    protected static final Gson GSON;
 
     static {
-        gson = new GsonBuilder().registerTypeAdapter(YearMonthDay.class, new JsonDeserializer<YearMonthDay>() {
+        GSON = new GsonBuilder().registerTypeAdapter(YearMonthDay.class, new JsonDeserializer<YearMonthDay>() {
             @Override
             public YearMonthDay deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
                 return YearMonthDay.of(jsonElement.getAsString());
@@ -39,7 +38,7 @@ public class ParameterMapper {
                 if(field.getType().isArray()) {
                     Object[] array = (Object[])value;
                     for(Object element : array) {
-                        map.put(key, String.valueOf(element));
+                        map.put(key + "[]", String.valueOf(element));
                     }
                 }else map.put(key, String.valueOf(value));
             } catch (IllegalAccessException e) {
@@ -50,6 +49,6 @@ public class ParameterMapper {
     }
 
     public static <T> T jsonToClass(String json, Class<T> clazz) {
-        return gson.fromJson(json, clazz);
+        return GSON.fromJson(json, clazz);
     }
 }

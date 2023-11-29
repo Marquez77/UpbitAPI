@@ -22,7 +22,6 @@ public class DeleteOrder {
      * @param identifier    조회용 사용자 지정 값
      */
     @Builder
-    @ToString
     public record Request(
             @Nullable UUID uuid,
             @Nullable UUID identifier
@@ -45,7 +44,6 @@ public class DeleteOrder {
      * @param executed_volume   체결된 양
      * @param trades_count      해당 주문에 걸린 체결 수
      */
-    @ToString
     public record Response(
             UUID uuid,
             OrderEnums.Side side,

@@ -53,7 +53,6 @@ public class GetTicker {
      *
      * 위 응답의 change, change_price, change_rate, signed_change_price, signed_change_rate 필드들은 전일종가 대비 값입니다.
      */
-    @ToString
     public record Response(
             String market,
             YearMonthDay trade_date,

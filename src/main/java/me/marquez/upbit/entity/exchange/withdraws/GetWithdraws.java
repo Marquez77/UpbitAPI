@@ -26,7 +26,6 @@ public class GetWithdraws {
      * @param order_by  정렬
      */
     @Builder
-    @ToString
     public record Request(
             @Nullable String currency,
             @Nullable WithdrawEnums.State state,
@@ -50,7 +49,6 @@ public class GetWithdraws {
      * @param fee               출금 수수료
      * @param transaction_type  출금 유형
      */
-    @ToString
     public record Response(
             String type,
             UUID uuid,

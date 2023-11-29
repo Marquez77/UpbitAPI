@@ -33,7 +33,6 @@ public class PostWithdrawsCoin {
      * @param transaction_type      출금 유형
      */
     @Builder
-    @ToString
     public record Request(
             @NonNull String currency,
             @NonNull String net_type,
@@ -57,7 +56,6 @@ public class PostWithdrawsCoin {
      * @param krw_amount        원화 환산 가격
      * @param transaction_type  출금 유형
      */
-    @ToString
     public record Response(
             String type,
             UUID uuid,

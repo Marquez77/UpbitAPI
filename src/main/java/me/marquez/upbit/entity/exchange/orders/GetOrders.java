@@ -33,7 +33,6 @@ public class GetOrders {
      * @param order_by      정렬 방식
      */
     @Builder
-    @ToString
     public record Request(
             @Nullable String market,
             @Nullable UUID[] uuids,
@@ -62,7 +61,6 @@ public class GetOrders {
      * @param executed_volume   체결된 양
      * @param trades_count      해당 주문에 걸린 체결 수
      */
-    @ToString
     public record Response(
             UUID uuid,
             OrderEnums.Side side,

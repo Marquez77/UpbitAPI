@@ -11,22 +11,31 @@ import me.marquez.upbit.entity.quotation.candles.GetCandlesMonths;
 import me.marquez.upbit.entity.quotation.candles.GetCandlesWeeks;
 import me.marquez.upbit.entity.quotation.market.GetMarketAll;
 import me.marquez.upbit.entity.quotation.trades.GetTradesTicks;
+import me.marquez.upbit.exception.UpbitAPIException;
+import me.marquez.upbit.internal.UpbitCore;
 
 public class UpbitAPI {
 
     public static Exchange createExchangeAPI(String accessKey, String secretKey) {
-        return new UpbitRestAPI(accessKey, secretKey);
+        return new UpbitCore(accessKey, secretKey);
     }
 
-    public static final Quotation QUOTATION = new UpbitRestAPI();
+    public static final Quotation QUOTATION = new UpbitCore();
 
+    /**
+	=============================================
+					EXCHANGE API
+			[주문 요청] 초당 8회, 분당 200회
+		   [주문 요청 외] 초당 30회, 분당 900회
+	=============================================
+	*/
     public interface Exchange {
         /**
          * 전체 계좌 조회
          * 내가 보유한 자산 리스트를 보여줍니다.
          * @return 요청 결과
          */
-        GetAccounts.Response getAccounts();
+        GetAccounts.Response[] getAccounts() throws UpbitAPIException;
 
         /**
          * 주문 가능 정보
@@ -34,7 +43,7 @@ public class UpbitAPI {
          * @param request 요청
          * @return 요청 결과
          */
-        GetOrdersChance.Response getOrdersChance(GetOrdersChance.Request request);
+        GetOrdersChance.Response getOrdersChance(GetOrdersChance.Request request) throws UpbitAPIException;
 
         /**
          * 개별 주문 조회
@@ -42,7 +51,7 @@ public class UpbitAPI {
          * @param request 요청
          * @return 요청 결과
          */
-        GetOrder.Response getOrder(GetOrder.Request request);
+        GetOrder.Response getOrder(GetOrder.Request request) throws UpbitAPIException;
 
         /**
          * 주문 리스트 조회
@@ -50,7 +59,7 @@ public class UpbitAPI {
          * @param request 요청
          * @return 요청 결과
          */
-        GetOrders.Response getOrders(GetOrders.Request request);
+        GetOrders.Response[] getOrders(GetOrders.Request request) throws UpbitAPIException;
 
         /**
          * 주문 취소 접수
@@ -58,7 +67,7 @@ public class UpbitAPI {
          * @param request 요청
          * @return 요청 결과
          */
-        DeleteOrder.Response deleteOrder(DeleteOrder.Request request);
+        DeleteOrder.Response deleteOrder(DeleteOrder.Request request) throws UpbitAPIException;
 
         /**
          * 주문하기
@@ -66,14 +75,14 @@ public class UpbitAPI {
          * @param request 요청
          * @return 요청 결과
          */
-        PostOrders.Response postOrders(PostOrders.Request request);
+        PostOrders.Response postOrders(PostOrders.Request request) throws UpbitAPIException;
 
         /**
          * 출금 리스트 조회
          * @param request 요청
          * @return 요청 결과
          */
-        GetWithdraws.Response getWithdraws(GetWithdraws.Request request);
+        GetWithdraws.Response[] getWithdraws(GetWithdraws.Request request) throws UpbitAPIException;
 
         /**
          * 개별 출금 조회
@@ -81,7 +90,7 @@ public class UpbitAPI {
          * @param request 요청
          * @return 요청 결과
          */
-        GetWithdraw.Response getWithdraw(GetWithdraw.Request request);
+        GetWithdraw.Response getWithdraw(GetWithdraw.Request request) throws UpbitAPIException;
 
         /**
          * 출금 가능 정보
@@ -89,7 +98,7 @@ public class UpbitAPI {
          * @param request 요청
          * @return 요청 결과
          */
-        GetWithdrawsChance.Response getWithdrawsChance(GetWithdrawsChance.Request request);
+        GetWithdrawsChance.Response getWithdrawsChance(GetWithdrawsChance.Request request) throws UpbitAPIException;
 
         /**
          * 디지털 자산 출금하기
@@ -105,7 +114,7 @@ public class UpbitAPI {
          * @param request 요청
          * @return 요청 결과
          */
-        PostWithdrawsCoin.Response postWithdrawsCoin(PostWithdrawsCoin.Request request);
+        PostWithdrawsCoin.Response postWithdrawsCoin(PostWithdrawsCoin.Request request) throws UpbitAPIException;
 
         /**
          * 원화 출금하기
@@ -113,7 +122,7 @@ public class UpbitAPI {
          * @param request 요청
          * @return 요청 결과
          */
-        PostWithdrawsKRW.Response postWithdrawsKRW(PostWithdrawsKRW.Request request);
+        PostWithdrawsKRW.Response postWithdrawsKRW(PostWithdrawsKRW.Request request) throws UpbitAPIException;
 
         /**
          * 출금 허용 주소 리스트 조회
@@ -125,10 +134,17 @@ public class UpbitAPI {
          *
          * @return 요청 결과
          */
-        GetWithdrawsCoinAddresses.Response getWithdrawsCoinAddresses();
+        GetWithdrawsCoinAddresses.Response getWithdrawsCoinAddresses() throws UpbitAPIException;
 
     }
 
+    /**
+	=============================================
+					QUOTATION API
+				 초당 10회, 분당 600회
+				 		IP 기준
+	=============================================
+	*/
     public interface Quotation {
         /**
          * 마켓 코드 조회
@@ -136,7 +152,7 @@ public class UpbitAPI {
          * @param request 요청
          * @return 요청 결과
          */
-        GetMarketAll.Response getMarketAll(GetMarketAll.Request request);
+        GetMarketAll.Response[] getMarketAll(GetMarketAll.Request request) throws UpbitAPIException;
 
         /**
          * 분(Minute) 캔들
@@ -144,35 +160,35 @@ public class UpbitAPI {
          * @param request   요청
          * @return          요청 결과
          */
-        GetCandlesMinutes.Response getCandlesMinutes(GetCandlesMinutes.Unit unit, GetCandlesMinutes.Request request);
+        GetCandlesMinutes.Response[] getCandlesMinutes(GetCandlesMinutes.Unit unit, GetCandlesMinutes.Request request) throws UpbitAPIException;
 
         /**
          * 일(Day) 캔들
          * @param request 요청
          * @return 요청 결과
          */
-        GetCandlesDays.Response getCandlesDays(GetCandlesDays.Request request);
+        GetCandlesDays.Response[] getCandlesDays(GetCandlesDays.Request request) throws UpbitAPIException;
 
         /**
          * 주(Week) 캔들
          * @param request 요청
          * @return 요청 결과
          */
-        GetCandlesWeeks.Response getCandlesWeeks(GetCandlesWeeks.Request request);
+        GetCandlesWeeks.Response[] getCandlesWeeks(GetCandlesWeeks.Request request) throws UpbitAPIException;
 
         /**
          * 월(Month) 캔들
          * @param request 요청
          * @return 요청 결과
          */
-        GetCandlesMonths.Response getCandlesMonths(GetCandlesMonths.Request request);
+        GetCandlesMonths.Response[] getCandlesMonths(GetCandlesMonths.Request request) throws UpbitAPIException;
 
         /**
          * 최근 체결 내역
          * @param request 요청
          * @return 요청 결과
          */
-        GetTradesTicks.Response getTradesTicks(GetTradesTicks.Request request);
+        GetTradesTicks.Response[] getTradesTicks(GetTradesTicks.Request request) throws UpbitAPIException;
 
         /**
          * 현재가 정보
@@ -180,14 +196,14 @@ public class UpbitAPI {
          * @param request 요청
          * @return 요청 결과
          */
-        GetTicker.Response getTicker(GetTicker.Request request);
+        GetTicker.Response[] getTicker(GetTicker.Request request) throws UpbitAPIException;
 
         /**
          * 호가 정보 조회
          * @param request 요청
          * @return 요청 결과
          */
-        GetOrderBook.Response getOrderBook(GetOrderBook.Request request);
+        GetOrderBook.Response[] getOrderBook(GetOrderBook.Request request) throws UpbitAPIException;
     }
 
 

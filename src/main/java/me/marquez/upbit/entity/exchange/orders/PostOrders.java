@@ -30,7 +30,6 @@ public class PostOrders {
      * @param identifier    조회용 사용자 지정값 (선택)
      */
     @Builder
-    @ToString
     public record Request(
             @NonNull String market,
             @NonNull OrderEnums.Side side,
@@ -57,7 +56,6 @@ public class PostOrders {
      * @param executed_volume   체결된 양
      * @param trades_count      해당 주문에 걸린 체결 수
      */
-    @ToString
     public record Response(
             UUID uuid,
             OrderEnums.Side side,

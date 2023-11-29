@@ -28,7 +28,6 @@ public class GetWithdrawsCoinAddresses {
      * @param withdraw_address      출금 주소
      * @param secondary_address     2차 출금 주소 (필요한 디지털 자산에 한해서)
      */
-    @ToString
     public record Response(
             String currency,
             String net_type,

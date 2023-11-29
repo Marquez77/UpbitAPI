@@ -27,7 +27,6 @@ public class GetOrderBook {
      * @param orderbook_units   호가
      *                          orderbook_unit 리스트에는 15호가 정보가 들어가며 차례대로 1호가, 2호가 ... 15호가의 정보를 담고 있습니다.
      */
-    @ToString
     public record Response(
             String market,
             long timestamp,
@@ -41,7 +40,6 @@ public class GetOrderBook {
          * @param ask_size      매도 잔량
          * @param bid_size      매수 잔량
          */
-        @ToString
         public record OrderBook(
                 double ask_price,
                 double bid_price,

@@ -60,7 +60,6 @@ public class PostWithdrawsKRW {
      * @param fee               출금 수수료
      * @param transaction_type  출금 유형
      */
-    @ToString
     public record Response(
             String type,
             UUID uuid,
