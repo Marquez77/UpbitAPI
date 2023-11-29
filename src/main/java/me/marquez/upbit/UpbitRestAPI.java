@@ -24,11 +24,15 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.*;
 
-public class UpbitRestAPI {
+public class UpbitRestAPI implements UpbitAPI.Exchange, UpbitAPI.Quotation {
 	private static final String SERVER_URL = "https://api.upbit.com/";
 	private static final Gson gson = new Gson();
 
 	protected UpbitRestAPI() {}
+
+	protected UpbitRestAPI(String accessKey, String secretKey) {
+
+	}
 
 	/*
 	=============================================

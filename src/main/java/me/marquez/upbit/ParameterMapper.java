@@ -48,4 +48,8 @@ public class ParameterMapper {
         }
         return map;
     }
+
+    public static <T> T jsonToClass(String json, Class<T> clazz) {
+        return gson.fromJson(json, clazz);
+    }
 }
