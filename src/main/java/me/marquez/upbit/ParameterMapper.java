@@ -1,11 +1,32 @@
 package me.marquez.upbit;
 
+import com.google.gson.*;
+import me.marquez.upbit.entity.date.HourMinuteSecond;
+import me.marquez.upbit.entity.date.YearMonthDay;
 import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Type;
+import java.time.YearMonth;
 
 public class ParameterMapper {
+
+    private static final Gson gson;
+
+    static {
+        gson = new GsonBuilder().registerTypeAdapter(YearMonthDay.class, new JsonDeserializer<YearMonthDay>() {
+            @Override
+            public YearMonthDay deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+                return YearMonthDay.of(jsonElement.getAsString());
+            }
+        }).registerTypeAdapter(HourMinuteSecond.class, new JsonDeserializer<HourMinuteSecond>() {
+            @Override
+            public HourMinuteSecond deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+                return HourMinuteSecond.of(jsonElement.getAsString());
+            }
+        }).create();
+    }
 
     public static MultiValuedMap<String, String> classToParameter(Object object) {
         MultiValuedMap<String, String> map = new ArrayListValuedHashMap<>();
