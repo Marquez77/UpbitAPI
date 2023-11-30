@@ -5,6 +5,8 @@ import lombok.ToString;
 import me.marquez.upbit.entity.enums.WithdrawEnums;
 import org.jetbrains.annotations.Nullable;
 
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.UUID;
 
@@ -48,10 +50,10 @@ public class GetWithdraw {
             String net_type,
             String txid,
             WithdrawEnums.State state,
-            Date created_at,
-            Date done_at,
-            double amount,
-            double fee,
+            OffsetDateTime created_at,
+            OffsetDateTime done_at,
+            BigDecimal amount,
+            BigDecimal fee,
             WithdrawEnums.TransactionType transaction_type
     ) {}
 }

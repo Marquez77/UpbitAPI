@@ -134,7 +134,7 @@ public class UpbitAPI {
          *
          * @return 요청 결과
          */
-        GetWithdrawsCoinAddresses.Response getWithdrawsCoinAddresses() throws UpbitAPIException;
+        GetWithdrawsCoinAddresses.Response[] getWithdrawsCoinAddresses() throws UpbitAPIException;
 
     }
 

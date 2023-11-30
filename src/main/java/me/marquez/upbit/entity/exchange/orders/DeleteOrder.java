@@ -5,6 +5,8 @@ import lombok.ToString;
 import me.marquez.upbit.entity.enums.OrderEnums;
 import org.jetbrains.annotations.Nullable;
 
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.UUID;
 
@@ -48,17 +50,17 @@ public class DeleteOrder {
             UUID uuid,
             OrderEnums.Side side,
             OrderEnums.OrderType ord_type,
-            double price,
+            BigDecimal price,
             OrderEnums.State state,
             String market,
-            Date created_at,
-            double volume,
-            double remaining_volume,
-            double reserved_fee,
-            double remaining_fee,
-            double paid_fee,
-            double locked,
-            double executed_volume,
+            OffsetDateTime created_at,
+            BigDecimal volume,
+            BigDecimal remaining_volume,
+            BigDecimal reserved_fee,
+            BigDecimal remaining_fee,
+            BigDecimal paid_fee,
+            BigDecimal locked,
+            BigDecimal executed_volume,
             int trades_count
     ) {}
 }

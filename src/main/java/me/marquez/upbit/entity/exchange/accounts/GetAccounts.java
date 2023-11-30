@@ -2,6 +2,8 @@ package me.marquez.upbit.entity.exchange.accounts;
 
 import lombok.ToString;
 
+import java.math.BigDecimal;
+
 /**
  * 전체 계좌 조회
  * 내가 보유한 자산 리스트를 보여줍니다.
@@ -20,9 +22,9 @@ public class GetAccounts {
      */
     public record Response(
             String currency,
-            double balance,
-            double locked,
-            double avg_buy_price,
+            BigDecimal balance,
+            BigDecimal locked,
+            BigDecimal avg_buy_price,
             boolean avg_buy_price_modified,
             String unit_currency
     ) {}

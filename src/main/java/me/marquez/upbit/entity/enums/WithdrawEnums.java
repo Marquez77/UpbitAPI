@@ -1,5 +1,6 @@
 package me.marquez.upbit.entity.enums;
 
+import com.google.gson.annotations.SerializedName;
 import lombok.AllArgsConstructor;
 
 public class WithdrawEnums {
@@ -34,12 +35,13 @@ public class WithdrawEnums {
         /**
          * 일반출금
          */
-        DEFAULT("default"),
+        @SerializedName("default")
+        DEFAULT,
+
         /**
          * 바로출금
          */
-        INTERNAL("internal");
-
-        private final String transaction_type;
+        @SerializedName("internal")
+        INTERNAL;
     }
 }

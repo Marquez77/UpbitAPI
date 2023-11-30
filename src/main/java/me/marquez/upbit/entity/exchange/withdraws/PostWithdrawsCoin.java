@@ -6,6 +6,8 @@ import lombok.ToString;
 import me.marquez.upbit.entity.enums.WithdrawEnums;
 import org.jetbrains.annotations.Nullable;
 
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.UUID;
 
@@ -36,7 +38,7 @@ public class PostWithdrawsCoin {
     public record Request(
             @NonNull String currency,
             @NonNull String net_type,
-            @NonNull double amount,
+            @NonNull BigDecimal amount,
             @NonNull String address,
             @Nullable String secondary_address,
             @Nullable WithdrawEnums.TransactionType transaction_type
@@ -63,11 +65,11 @@ public class PostWithdrawsCoin {
             String net_type,
             String txid,
             WithdrawEnums.State state,
-            Date created_at,
-            Date done_at,
-            double amount,
-            double fee,
-            double krw_amount,
+            OffsetDateTime created_at,
+            OffsetDateTime done_at,
+            BigDecimal amount,
+            BigDecimal fee,
+            BigDecimal krw_amount,
             WithdrawEnums.TransactionType transaction_type
     ) {}
 }

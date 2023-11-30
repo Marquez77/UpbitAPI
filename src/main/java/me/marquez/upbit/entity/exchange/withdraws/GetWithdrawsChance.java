@@ -1,7 +1,10 @@
 package me.marquez.upbit.entity.exchange.withdraws;
 
+import lombok.Builder;
 import lombok.NonNull;
 import lombok.ToString;
+
+import java.math.BigDecimal;
 
 /**
  * 출금 가능 정보
@@ -15,6 +18,7 @@ public class GetWithdrawsChance {
      * @param currency  Currency symbol
      * @param net_type  출금 네트워크
      */
+    @Builder
     public record Request(
             @NonNull String currency,
             @NonNull String net_type
@@ -62,7 +66,7 @@ public class GetWithdrawsChance {
          */
         public record Currency(
                 String code,
-                double withdraw_fee,
+                BigDecimal withdraw_fee,
                 boolean is_coin,
                 String wallet_state,
                 String[] wallet_support
@@ -78,9 +82,9 @@ public class GetWithdrawsChance {
          */
         public record Account(
                 String currency,
-                double balance,
-                double locked,
-                double avg_buy_price,
+                BigDecimal balance,
+                BigDecimal locked,
+                BigDecimal avg_buy_price,
                 boolean avg_buy_price_modified,
                 String unit_currency
         ) {}
@@ -97,11 +101,11 @@ public class GetWithdrawsChance {
          */
         public record WithdrawLimit(
                 String currency,
-                double minimum,
-                double onetime,
-                double daily,
-                double remaining_daily,
-                double remaining_daily_krw,
+                BigDecimal minimum,
+                BigDecimal onetime,
+                BigDecimal daily,
+                BigDecimal remaining_daily,
+                BigDecimal remaining_daily_krw,
                 int fixed,
                 boolean can_withdraw
         ) {}

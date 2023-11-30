@@ -6,6 +6,8 @@ import lombok.ToString;
 import me.marquez.upbit.entity.enums.OrderEnums;
 import org.jetbrains.annotations.Nullable;
 
+import java.math.BigDecimal;
+
 /**
  * 주문 가능 정보
  * 마켓별 주문 가능 정보를 확인한다.
@@ -30,8 +32,8 @@ public class GetOrdersChance {
      * @param ask_account   매도 시 사용하는 화폐의 계좌 상태
      */
     public record Response(
-            double bid_fee,
-            double ask_fee,
+            BigDecimal bid_fee,
+            BigDecimal ask_fee,
             MarketInfo market,
             Account bid_account,
             Account ask_account
@@ -55,7 +57,7 @@ public class GetOrdersChance {
                 OrderEnums.Side[] order_sides,
                 Restrictions bid,
                 Restrictions ask,
-                double max_total,
+                BigDecimal max_total,
                 String state
         ) {
             /**
@@ -66,7 +68,7 @@ public class GetOrdersChance {
             public record Restrictions(
                     String currency,
                     @Nullable String price_unit,
-                    double min_total
+                    BigDecimal min_total
             ) {}
         }
 
@@ -80,9 +82,9 @@ public class GetOrdersChance {
          */
         public record Account(
                 String currency,
-                double balance,
-                double locked,
-                double avg_buy_price,
+                BigDecimal balance,
+                BigDecimal locked,
+                BigDecimal avg_buy_price,
                 boolean avg_buy_price_modified,
                 String unit_currency
         ) {}

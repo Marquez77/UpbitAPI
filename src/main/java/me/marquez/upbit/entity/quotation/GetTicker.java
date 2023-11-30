@@ -3,9 +3,10 @@ package me.marquez.upbit.entity.quotation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NonNull;
-import lombok.ToString;
-import me.marquez.upbit.entity.date.HourMinuteSecond;
-import me.marquez.upbit.entity.date.YearMonthDay;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 /**
  * 현재가 정보
@@ -20,7 +21,7 @@ public class GetTicker {
      */
     @Builder
     public record Request(
-            @NonNull String[] markets
+            @NonNull String markets
     ) {}
 
     /**
@@ -55,30 +56,30 @@ public class GetTicker {
      */
     public record Response(
             String market,
-            YearMonthDay trade_date,
-            HourMinuteSecond trade_time,
-            YearMonthDay trade_date_kst,
-            HourMinuteSecond trade_time_kst,
+            LocalDate trade_date,
+            LocalTime trade_time,
+            LocalDate trade_date_kst,
+            LocalTime trade_time_kst,
             long trade_timestamp,
-            double opening_price,
-            double high_price,
-            double low_price,
-            double trade_price,
-            double prev_closing_price,
+            BigDecimal opening_price,
+            BigDecimal high_price,
+            BigDecimal low_price,
+            BigDecimal trade_price,
+            BigDecimal prev_closing_price,
             Change change,
-            double change_price,
-            double change_rate,
-            double signed_change_price,
-            double signed_change_rate,
-            double trade_volume,
-            double acc_trade_price,
-            double acc_trade_price_24h,
-            double acc_trade_volume,
-            double acc_trade_volume_24h,
-            double highest_52_week_price,
-            YearMonthDay highest_52_week_date,
-            double lowest_52_week_price,
-            YearMonthDay lowest_52_week_date,
+            BigDecimal change_price,
+            BigDecimal change_rate,
+            BigDecimal signed_change_price,
+            BigDecimal signed_change_rate,
+            BigDecimal trade_volume,
+            BigDecimal acc_trade_price,
+            BigDecimal acc_trade_price_24h,
+            BigDecimal acc_trade_volume,
+            BigDecimal acc_trade_volume_24h,
+            BigDecimal highest_52_week_price,
+            LocalDate highest_52_week_date,
+            BigDecimal lowest_52_week_price,
+            LocalDate lowest_52_week_date,
             long timestamp
     ) {
         @AllArgsConstructor

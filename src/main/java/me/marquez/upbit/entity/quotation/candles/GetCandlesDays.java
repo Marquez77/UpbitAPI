@@ -5,6 +5,9 @@ import lombok.NonNull;
 import lombok.ToString;
 import org.jetbrains.annotations.Nullable;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Date;
 
 /**
@@ -25,7 +28,7 @@ public class GetCandlesDays {
     @Builder
     public record Request(
             @NonNull String market,
-            @Nullable Date to,
+            @Nullable OffsetDateTime to,
             @Nullable int count,
             @Nullable String convertingPriceUnit
     ) {}
@@ -48,18 +51,18 @@ public class GetCandlesDays {
      */
     public record Response(
             String market,
-            Date candle_date_time_utc,
-            Date candle_date_time_kst,
-            double opening_price,
-            double high_price,
-            double low_price,
-            double trade_price,
+            LocalDateTime candle_date_time_utc,
+            LocalDateTime candle_date_time_kst,
+            BigDecimal opening_price,
+            BigDecimal high_price,
+            BigDecimal low_price,
+            BigDecimal trade_price,
             long timestamp,
-            double candle_acc_trade_price,
-            double candle_acc_trade_volume,
-            double prev_closing_price,
-            double change_price,
-            double change_rate,
-            double converted_trade_price
+            BigDecimal candle_acc_trade_price,
+            BigDecimal candle_acc_trade_volume,
+            BigDecimal prev_closing_price,
+            BigDecimal change_price,
+            BigDecimal change_rate,
+            @Nullable Double converted_trade_price
     ) {}
 }

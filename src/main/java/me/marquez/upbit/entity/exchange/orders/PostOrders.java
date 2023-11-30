@@ -7,6 +7,8 @@ import lombok.ToString;
 import me.marquez.upbit.entity.enums.OrderEnums;
 import org.jetbrains.annotations.Nullable;
 
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.UUID;
 
@@ -33,8 +35,8 @@ public class PostOrders {
     public record Request(
             @NonNull String market,
             @NonNull OrderEnums.Side side,
-            @NonNull double volume,
-            @NonNull double price,
+            @NonNull BigDecimal volume,
+            @NonNull BigDecimal price,
             @NonNull OrderEnums.OrderType ord_type,
             @Nullable String identifier
     ) {}
@@ -60,17 +62,17 @@ public class PostOrders {
             UUID uuid,
             OrderEnums.Side side,
             OrderEnums.OrderType ord_type,
-            double price,
+            BigDecimal price,
             OrderEnums.State state,
             String market,
-            Date crated_at,
-            double volume,
-            double remaining_volume,
-            double reserved_fee,
-            double remaining_fee,
-            double paid_fee,
-            double locked,
-            double executed_volume,
+            OffsetDateTime crated_at,
+            BigDecimal volume,
+            BigDecimal remaining_volume,
+            BigDecimal reserved_fee,
+            BigDecimal remaining_fee,
+            BigDecimal paid_fee,
+            BigDecimal locked,
+            BigDecimal executed_volume,
             int trades_count
     ) {}
 }

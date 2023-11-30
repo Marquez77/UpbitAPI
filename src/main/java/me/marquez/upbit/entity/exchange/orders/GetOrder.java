@@ -5,6 +5,8 @@ import lombok.ToString;
 import me.marquez.upbit.entity.enums.OrderEnums;
 import org.jetbrains.annotations.Nullable;
 
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -50,17 +52,17 @@ public class GetOrder {
             UUID uuid,
             OrderEnums.Side side,
             OrderEnums.OrderType ord_type,
-            double price,
+            BigDecimal price,
             OrderEnums.State state,
             String market,
-            Date created_at,
-            double volume,
-            double remaining_volume,
-            double reserved_fee,
-            double remaining_fee,
-            double paid_fee,
-            double locked,
-            double executed_volume,
+            OffsetDateTime created_at,
+            BigDecimal volume,
+            BigDecimal remaining_volume,
+            BigDecimal reserved_fee,
+            BigDecimal remaining_fee,
+            BigDecimal paid_fee,
+            BigDecimal locked,
+            BigDecimal executed_volume,
             int trades_count,
             List<Trade> trades
     ) {
@@ -76,11 +78,11 @@ public class GetOrder {
         public record Trade(
                 String market,
                 UUID uuid,
-                double price,
-                double volume,
-                double funds,
+                BigDecimal price,
+                BigDecimal volume,
+                BigDecimal funds,
                 OrderEnums.Side side,
-                Date created_at
+                OffsetDateTime created_at
         ) {}
     }
 }

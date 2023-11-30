@@ -1,5 +1,6 @@
 package me.marquez.upbit.entity.enums;
 
+import com.google.gson.annotations.SerializedName;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -7,10 +8,12 @@ public enum OrderBy {
     /**
      * 오름차순
      */
-    ASC("asc"),
+    @SerializedName("asc")
+    ASC,
+
     /**
      * 내림차순 (default)
      */
-    DESC("desc");
-    private final String order_by;
+    @SerializedName("desc")
+    DESC;
 }

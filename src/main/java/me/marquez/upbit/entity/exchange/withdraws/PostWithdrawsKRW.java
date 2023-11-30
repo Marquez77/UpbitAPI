@@ -1,5 +1,6 @@
 package me.marquez.upbit.entity.exchange.withdraws;
 
+import com.google.gson.annotations.SerializedName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NonNull;
@@ -7,6 +8,8 @@ import lombok.ToString;
 import me.marquez.upbit.entity.enums.WithdrawEnums;
 import org.jetbrains.annotations.Nullable;
 
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.UUID;
 
@@ -24,7 +27,7 @@ public class PostWithdrawsKRW {
      */
     @Builder
     public record Request(
-            @NonNull double amount,
+            @NonNull BigDecimal amount,
             @NonNull TwoFactorType two_factor_type
     ) {
         @AllArgsConstructor
@@ -32,19 +35,20 @@ public class PostWithdrawsKRW {
             /**
              * 카카오 인증
              */
-            KAKAO("kakao"),
+            @SerializedName("kakao")
+            KAKAO,
 
             /**
              * 카카오 페이 인증
              */
-            @Deprecated KAKAO_PAY("kakao_pay"),
+            @SerializedName("kakao_pay")
+            @Deprecated KAKAO_PAY,
 
             /**
              * 네이버 인증
              */
-            NAVER("naver");
-
-            private final String two_factor_type;
+            @SerializedName("naver")
+            NAVER;
         }
     }
 
@@ -66,10 +70,10 @@ public class PostWithdrawsKRW {
             String currency,
             String txid,
             String state,
-            Date created_at,
-            Date done_at,
-            double amount,
-            double fee,
+            OffsetDateTime created_at,
+            OffsetDateTime done_at,
+            BigDecimal amount,
+            BigDecimal fee,
             WithdrawEnums.TransactionType transaction_type
     ) {}
 }

@@ -2,13 +2,12 @@ package me.marquez.upbit.entity.quotation.trades;
 
 import lombok.Builder;
 import lombok.NonNull;
-import lombok.ToString;
-import me.marquez.upbit.entity.date.HourMinuteSecond;
-import me.marquez.upbit.entity.date.YearMonthDay;
 import me.marquez.upbit.entity.enums.OrderEnums;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Date;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 /**
  * 최근 체결 내역
@@ -27,7 +26,7 @@ public class GetTradesTicks {
     @Builder
     public record Request(
             @NonNull String market,
-            @Nullable Date to,
+            @Nullable LocalTime to,
             @Nullable int count,
             @Nullable String cursor,
             @Nullable int daysAgo
@@ -48,13 +47,13 @@ public class GetTradesTicks {
      */
     public record Response(
             String market,
-            YearMonthDay trade_date_utc,
-            HourMinuteSecond trade_time_utc,
+            LocalDate trade_date_utc,
+            LocalTime trade_time_utc,
             long timestamp,
-            double trade_price,
-            double trade_volume,
-            double prev_closing_price,
-            double change_price,
+            BigDecimal trade_price,
+            BigDecimal trade_volume,
+            BigDecimal prev_closing_price,
+            BigDecimal change_price,
             OrderEnums.Side ask_bid,
             long sequential_id
     ) {}

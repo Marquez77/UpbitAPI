@@ -32,6 +32,7 @@ import org.apache.http.util.EntityUtils;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -42,7 +43,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpbitCore implements UpbitAPI.Exchange, UpbitAPI.Quotation {
-	private static final String SERVER_URL = "https://api.upbit.com/";
+	private static final String SERVER_URL = "https://api.upbit.com";
 
 	private String accessKey;
 	private String secretKey;
@@ -54,9 +55,11 @@ public class UpbitCore implements UpbitAPI.Exchange, UpbitAPI.Quotation {
 	=============================================
 	*/
 	private String makeQueryString(MultiValuedMap<String, String> params) {
+		if(params.isEmpty())
+			return null;
 		ArrayList<String> queryElements = new ArrayList<>();
 		for(Map.Entry<String, String> entity : params.entries()) {
-			queryElements.add(entity.getKey() + "=" + entity.getValue());
+			queryElements.add(entity.getKey() + "=" + URLEncoder.encode(entity.getValue(), StandardCharsets.UTF_8));
 		}
 		return String.join("&", queryElements.toArray(String[]::new));
 	}
@@ -80,13 +83,13 @@ public class UpbitCore implements UpbitAPI.Exchange, UpbitAPI.Quotation {
 		}
 		return request;
 	}
-	private String request(Method method, String accessKey, String secretKey, String endpoint, MultiValuedMap<String, String> params) throws UpbitAPIException {
+	private String request(Method method, String accessKey, String secretKey, String endpoint, String body) throws UpbitAPIException {
 		try {
-			String queryString = params != null ? makeQueryString(params) : null;
+			String queryString = body != null ? makeQueryString(DataMapper.jsonToMap(body)) : null;
 
 			HttpClient client = HttpClientBuilder.create().build();
 			String uri = SERVER_URL + (endpoint.startsWith("/") ? "" : "/") + endpoint + (queryString == null ? "" : ("?" + queryString));
-			HttpUriRequest request = makeRequest(method, uri, DataMapper.GSON.toJson(params));
+			HttpUriRequest request = makeRequest(method, uri, body);
 			request.setHeader("Content-Type", "application/json");
 
 			if (accessKey != null) {
@@ -112,7 +115,7 @@ public class UpbitCore implements UpbitAPI.Exchange, UpbitAPI.Quotation {
 			int statusCode = response.getStatusLine().getStatusCode();
 			HttpEntity entity = response.getEntity();
 			String result = EntityUtils.toString(entity, "UTF-8");
-			if (statusCode == 200) {
+			if (statusCode == 200 || statusCode == 201) {
 				return result;
 			} else {
 				if(result.contains("error")) {
@@ -130,28 +133,28 @@ public class UpbitCore implements UpbitAPI.Exchange, UpbitAPI.Quotation {
 		}
 	}
 
-	private String get(String accessKey, String secretKey, String endpoint, MultiValuedMap<String, String> params) throws UpbitAPIException{
-		return request(Method.GET, accessKey, secretKey, endpoint, params);
+	private String get(String accessKey, String secretKey, String endpoint, String body) throws UpbitAPIException{
+		return request(Method.GET, accessKey, secretKey, endpoint, body);
 	}
 	private String get(String accessKey, String secretKey, String endpoint) throws UpbitAPIException{
 		return get(accessKey, secretKey, endpoint, null);
 	}
-	private String get(String endpoint, MultiValuedMap<String, String> params) throws UpbitAPIException{
-		return get(null, null, endpoint, params);
+	private String get(String endpoint, String body) throws UpbitAPIException{
+		return get(null, null, endpoint, body);
 	}
 	private String get(String endpoint) throws UpbitAPIException{
 		return get(null, null, endpoint, null);
 	}
 
-	private String post(String accessKey, String secretKey, String endpoint, MultiValuedMap<String, String> params) throws UpbitAPIException{
-		return request(Method.POST, accessKey, secretKey, endpoint, params);
+	private String post(String accessKey, String secretKey, String endpoint, String body) throws UpbitAPIException{
+		return request(Method.POST, accessKey, secretKey, endpoint, body);
 	}
 	private String post(String accessKey, String secretKey, String endpoint) throws UpbitAPIException{
 		return post(accessKey, secretKey, endpoint, null);
 	}
 
-	private String delete(String accessKey, String secretKey, String endpoint, MultiValuedMap<String, String> params) throws UpbitAPIException{
-		return request(Method.DELETE, accessKey, secretKey, endpoint, params);
+	private String delete(String accessKey, String secretKey, String endpoint, String body) throws UpbitAPIException{
+		return request(Method.DELETE, accessKey, secretKey, endpoint, body);
 	}
 	private String delete(String accessKey, String secretKey, String endpoint) throws UpbitAPIException{
 		return delete(accessKey, secretKey, endpoint, null);
@@ -167,62 +170,74 @@ public class UpbitCore implements UpbitAPI.Exchange, UpbitAPI.Quotation {
 	@Override
 	public GetAccounts.Response[] getAccounts() {
 		String json = get(accessKey, secretKey, GetAccounts.END_POINT);
-		return DataMapper.jsonToClass(json, GetAccounts.Response[].class);
+		return DataMapper.jsonToObject(json, GetAccounts.Response[].class);
 	}
 
 	@Override
 	public GetOrdersChance.Response getOrdersChance(GetOrdersChance.Request request) {
-		return null;
+		String json = get(accessKey, secretKey, GetOrdersChance.END_POINT, DataMapper.objectToJson(request));
+		return DataMapper.jsonToObject(json, GetOrdersChance.Response.class);
 	}
 
 	@Override
 	public GetOrder.Response getOrder(GetOrder.Request request) {
-		return null;
+		String json = get(accessKey, secretKey, GetOrder.END_POINT, DataMapper.objectToJson(request));
+		return DataMapper.jsonToObject(json, GetOrder.Response.class);
 	}
 
 	@Override
 	public GetOrders.Response[] getOrders(GetOrders.Request request) {
-		return null;
+		String json = get(accessKey, secretKey, GetOrders.END_POINT, DataMapper.objectToJson(request));
+		return DataMapper.jsonToObject(json, GetOrders.Response[].class);
 	}
 
 	@Override
 	public DeleteOrder.Response deleteOrder(DeleteOrder.Request request) {
-		return null;
+		String json = delete(accessKey, secretKey, DeleteOrder.END_POINT, DataMapper.objectToJson(request));
+		return DataMapper.jsonToObject(json, DeleteOrder.Response.class);
 	}
 
 	@Override
 	public PostOrders.Response postOrders(PostOrders.Request request) {
-		return null;
+		String json = post(accessKey, secretKey, PostOrders.END_POINT, DataMapper.objectToJson(request));
+		return DataMapper.jsonToObject(json, PostOrders.Response.class);
 	}
 
 	@Override
 	public GetWithdraws.Response[] getWithdraws(GetWithdraws.Request request) {
-		return null;
+		String json = get(accessKey, secretKey, GetWithdraws.END_POINT, DataMapper.objectToJson(request));
+		return DataMapper.jsonToObject(json, GetWithdraws.Response[].class);
 	}
 
 	@Override
 	public GetWithdraw.Response getWithdraw(GetWithdraw.Request request) {
-		return null;
+		String json = get(accessKey, secretKey, GetWithdraw.END_POINT, DataMapper.objectToJson(request));
+		return DataMapper.jsonToObject(json, GetWithdraw.Response.class);
 	}
 
 	@Override
 	public GetWithdrawsChance.Response getWithdrawsChance(GetWithdrawsChance.Request request) {
-		return null;
+		String json = get(accessKey, secretKey, GetWithdrawsChance.END_POINT, DataMapper.objectToJson(request));
+		return DataMapper.jsonToObject(json, GetWithdrawsChance.Response.class);
 	}
 
 	@Override
 	public PostWithdrawsCoin.Response postWithdrawsCoin(PostWithdrawsCoin.Request request) {
-		return null;
+		String json = post(accessKey, secretKey, PostWithdrawsCoin.END_POINT, DataMapper.objectToJson(request));
+		return DataMapper.jsonToObject(json, PostWithdrawsCoin.Response.class);
 	}
 
 	@Override
 	public PostWithdrawsKRW.Response postWithdrawsKRW(PostWithdrawsKRW.Request request) {
-		return null;
+		String json = post(accessKey, secretKey, PostWithdrawsKRW.END_POINT, DataMapper.objectToJson(request));
+		return DataMapper.jsonToObject(json, PostWithdrawsKRW.Response.class);
 	}
 
 	@Override
-	public GetWithdrawsCoinAddresses.Response getWithdrawsCoinAddresses() {
-		return null;
+	public GetWithdrawsCoinAddresses.Response[] getWithdrawsCoinAddresses() {
+		String json = get(accessKey, secretKey, GetWithdrawsCoinAddresses.END_POINT);
+		System.out.println(json);
+		return DataMapper.jsonToObject(json, GetWithdrawsCoinAddresses.Response[].class);
 	}
 
 
@@ -234,42 +249,49 @@ public class UpbitCore implements UpbitAPI.Exchange, UpbitAPI.Quotation {
 	*/
 	@Override
 	public GetMarketAll.Response[] getMarketAll(GetMarketAll.Request request) {
-		String json = get(GetMarketAll.END_POINT, DataMapper.classToParameter(request));
-		return DataMapper.jsonToClass(json, GetMarketAll.Response[].class);
+		String json = get(GetMarketAll.END_POINT, DataMapper.objectToJson(request));
+		return DataMapper.jsonToObject(json, GetMarketAll.Response[].class);
 	}
 
 	@Override
-	public GetCandlesMinutes.Response getCandlesMinutes(GetCandlesMinutes.Unit unit, GetCandlesMinutes.Request request) {
-		return null;
+	public GetCandlesMinutes.Response[] getCandlesMinutes(GetCandlesMinutes.Unit unit, GetCandlesMinutes.Request request) {
+		String json = get(GetCandlesMinutes.END_POINT + "/" + unit.getUnit(), DataMapper.objectToJson(request));
+		return DataMapper.jsonToObject(json, GetCandlesMinutes.Response[].class);
 	}
 
 	@Override
-	public GetCandlesDays.Response getCandlesDays(GetCandlesDays.Request request) {
-		return null;
+	public GetCandlesDays.Response[] getCandlesDays(GetCandlesDays.Request request) {
+		String json = get(GetCandlesDays.END_POINT, DataMapper.objectToJson(request));
+		return DataMapper.jsonToObject(json, GetCandlesDays.Response[].class);
 	}
 
 	@Override
-	public GetCandlesWeeks.Response getCandlesWeeks(GetCandlesWeeks.Request request) {
-		return null;
+	public GetCandlesWeeks.Response[] getCandlesWeeks(GetCandlesWeeks.Request request) {
+		String json = get(GetCandlesWeeks.END_POINT, DataMapper.objectToJson(request));
+		return DataMapper.jsonToObject(json, GetCandlesWeeks.Response[].class);
 	}
 
 	@Override
-	public GetCandlesMonths.Response getCandlesMonths(GetCandlesMonths.Request request) {
-		return null;
+	public GetCandlesMonths.Response[] getCandlesMonths(GetCandlesMonths.Request request) {
+		String json = get(GetCandlesMonths.END_POINT, DataMapper.objectToJson(request));
+		return DataMapper.jsonToObject(json, GetCandlesMonths.Response[].class);
 	}
 
 	@Override
-	public GetTradesTicks.Response getTradesTicks(GetTradesTicks.Request request) {
-		return null;
+	public GetTradesTicks.Response[] getTradesTicks(GetTradesTicks.Request request) {
+		String json = get(GetTradesTicks.END_POINT, DataMapper.objectToJson(request));
+		return DataMapper.jsonToObject(json, GetTradesTicks.Response[].class);
 	}
 
 	@Override
-	public GetTicker.Response getTicker(GetTicker.Request request) {
-		return null;
+	public GetTicker.Response[] getTicker(GetTicker.Request request) {
+		String json = get(GetTicker.END_POINT, DataMapper.objectToJson(request));
+		return DataMapper.jsonToObject(json, GetTicker.Response[].class);
 	}
 
 	@Override
-	public GetOrderBook.Response getOrderBook(GetOrderBook.Request request) {
-		return null;
+	public GetOrderBook.Response[] getOrderBook(GetOrderBook.Request request) {
+		String json = get(GetOrderBook.END_POINT, DataMapper.objectToJson(request));
+		return DataMapper.jsonToObject(json, GetOrderBook.Response[].class);
 	}
 }

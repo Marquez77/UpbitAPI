@@ -4,6 +4,11 @@ import lombok.Builder;
 import lombok.NonNull;
 import lombok.ToString;
 
+import java.lang.reflect.RecordComponent;
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.StringJoiner;
+
 /**
  * 호가 정보 조회
  */
@@ -30,8 +35,8 @@ public class GetOrderBook {
     public record Response(
             String market,
             long timestamp,
-            double total_ask_size,
-            double total_bid_size,
+            BigDecimal total_ask_size,
+            BigDecimal total_bid_size,
             OrderBook[] orderbook_units
     ) {
         /**
@@ -41,10 +46,10 @@ public class GetOrderBook {
          * @param bid_size      매수 잔량
          */
         public record OrderBook(
-                double ask_price,
-                double bid_price,
-                double ask_size,
-                double bid_size
+                BigDecimal ask_price,
+                BigDecimal bid_price,
+                BigDecimal ask_size,
+                BigDecimal bid_size
         ) {}
     }
 }
