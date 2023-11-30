@@ -1,13 +1,15 @@
 # UpbitAPI
 업비트 OpenAPI를 Java에서 쉽게 사용하기 위한 API 입니다.\
-현재 개발 중이며 아래와 같은 방식으로 사용할 수 있도록 개발할 예정입니다.
+Deposits 관련 API를 제외하고 전부 테스트 완료되었습니다.
+---
+## Example
 ```java
 //Upbit OpenAPI 정보
 final String ACCESS_KEY = "";
 final String SECRET_KEY = "";
 
-//API 인스턴스 생성
-UpbitApi api = new UpbitApiBuilder().access(ACCESS_KEY).secret(SECRET_KEY).build();
+//Exchange API 인스턴스 생성
+UpbitAPI.Exchange api = new UpbitAPI.createExchangeAPI(ACCESS_KEY, SECRET_KEY);
 
 //API 요청 인스턴스 생성
 UUID uniqueId = UUID.randomUUID();
@@ -26,5 +28,13 @@ try{
 }catch(UpbitApiException e) { //오류 발생 시
     System.out.println("Error: " + e.getMessage());
 }
+
+//Quotation API
+var response = UpbitAPI.QUOTATION.getMarketAll(
+        GetMarketAll.Request.builder()
+            .isDetails(true)
+            .build()
+);
+System.out.println(Arrays.toString(response));
 
 ```
