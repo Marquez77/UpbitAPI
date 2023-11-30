@@ -21,6 +21,7 @@ public class UpbitAPI {
         return new UpbitCore(accessKey, secretKey);
     }
 
+    // TODO: 2023-12-01  RateLimit 계산을 위해 추후 아이피로 생성할 수 있도록 변경해야 함
     public static final Quotation QUOTATION = new UpbitCore();
 
     /**

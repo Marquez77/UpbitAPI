@@ -121,6 +121,8 @@ public class DataMapper {
     }
 
     public static <T> T jsonToObject(String json, Class<T> clazz) {
+        if(json == null || json.isEmpty())
+            return null;
         return GSON.fromJson(json, clazz);
     }
 

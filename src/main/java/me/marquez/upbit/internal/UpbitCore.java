@@ -5,10 +5,6 @@ import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import io.github.bucket4j.Bandwidth;
-import io.github.bucket4j.Bucket;
-import io.github.bucket4j.Bucket4j;
-import io.github.bucket4j.Refill;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import me.marquez.upbit.UpbitAPI;
@@ -41,9 +37,10 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.time.Duration;
-import java.util.*;
-import java.util.concurrent.ExecutorService;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -126,7 +123,7 @@ public class UpbitCore implements UpbitAPI.Exchange, UpbitAPI.Quotation {
 			int statusCode = response.getStatusLine().getStatusCode();
 			HttpEntity entity = response.getEntity();
 			String result = EntityUtils.toString(entity, "UTF-8");
-			if(response.containsHeader("Remaining-Req")) {
+			if(response.containsHeader("Remaining-Req")) { // 남은 요청 수 계산
 				HeaderElement element = response.getHeaders("Remaining-Req")[0].getElements()[0];
 				String group = element.getValue();
 				int limitForMinutes = Integer.parseInt(element.getParameterByName("min").getValue());
@@ -139,6 +136,8 @@ public class UpbitCore implements UpbitAPI.Exchange, UpbitAPI.Quotation {
 			}
 			if (statusCode == 200 || statusCode == 201) {
 				return result;
+			}else if(statusCode == 429) { // 429 Too Many Requests
+				return null;
 			} else {
 				if(result.contains("error")) {
 					JsonObject error = JsonParser.parseString(result).getAsJsonObject().get("error").getAsJsonObject();
@@ -191,74 +190,97 @@ public class UpbitCore implements UpbitAPI.Exchange, UpbitAPI.Quotation {
 	*/
 	@Override
 	public GetAccounts.Response[] getAccounts() {
+		if(rateLimits.getOrDefault("default", 1) == 0)
+			return null;
 		String json = get(accessKey, secretKey, GetAccounts.END_POINT);
 		return DataMapper.jsonToObject(json, GetAccounts.Response[].class);
 	}
 
 	@Override
 	public GetOrdersChance.Response getOrdersChance(GetOrdersChance.Request request) {
+		if(rateLimits.getOrDefault("default", 1) == 0)
+			return null;
 		String json = get(accessKey, secretKey, GetOrdersChance.END_POINT, DataMapper.objectToJson(request));
 		return DataMapper.jsonToObject(json, GetOrdersChance.Response.class);
 	}
 
 	@Override
 	public GetOrder.Response getOrder(GetOrder.Request request) {
+		if(rateLimits.getOrDefault("default", 1) == 0)
+			return null;
 		String json = get(accessKey, secretKey, GetOrder.END_POINT, DataMapper.objectToJson(request));
 		return DataMapper.jsonToObject(json, GetOrder.Response.class);
 	}
 
 	@Override
 	public GetOrders.Response[] getOrders(GetOrders.Request request) {
+		if(rateLimits.getOrDefault("default", 1) == 0)
+			return null;
 		String json = get(accessKey, secretKey, GetOrders.END_POINT, DataMapper.objectToJson(request));
 		return DataMapper.jsonToObject(json, GetOrders.Response[].class);
 	}
 
 	@Override
 	public DeleteOrder.Response deleteOrder(DeleteOrder.Request request) {
+		if(rateLimits.getOrDefault("default", 1) == 0)
+			return null;
 		String json = delete(accessKey, secretKey, DeleteOrder.END_POINT, DataMapper.objectToJson(request));
 		return DataMapper.jsonToObject(json, DeleteOrder.Response.class);
 	}
 
 	@Override
 	public PostOrders.Response postOrders(PostOrders.Request request) {
+		if(rateLimits.getOrDefault("order", 1) == 0)
+			return null;
 		String json = post(accessKey, secretKey, PostOrders.END_POINT, DataMapper.objectToJson(request));
 		return DataMapper.jsonToObject(json, PostOrders.Response.class);
 	}
 
 	@Override
 	public GetWithdraws.Response[] getWithdraws(GetWithdraws.Request request) {
+		if(rateLimits.getOrDefault("default", 1) == 0)
+			return null;
 		String json = get(accessKey, secretKey, GetWithdraws.END_POINT, DataMapper.objectToJson(request));
 		return DataMapper.jsonToObject(json, GetWithdraws.Response[].class);
 	}
 
 	@Override
 	public GetWithdraw.Response getWithdraw(GetWithdraw.Request request) {
+		if(rateLimits.getOrDefault("default", 1) == 0)
+			return null;
 		String json = get(accessKey, secretKey, GetWithdraw.END_POINT, DataMapper.objectToJson(request));
 		return DataMapper.jsonToObject(json, GetWithdraw.Response.class);
 	}
 
 	@Override
 	public GetWithdrawsChance.Response getWithdrawsChance(GetWithdrawsChance.Request request) {
+		if(rateLimits.getOrDefault("default", 1) == 0)
+			return null;
 		String json = get(accessKey, secretKey, GetWithdrawsChance.END_POINT, DataMapper.objectToJson(request));
 		return DataMapper.jsonToObject(json, GetWithdrawsChance.Response.class);
 	}
 
 	@Override
 	public PostWithdrawsCoin.Response postWithdrawsCoin(PostWithdrawsCoin.Request request) {
+		if(rateLimits.getOrDefault("default", 1) == 0)
+			return null;
 		String json = post(accessKey, secretKey, PostWithdrawsCoin.END_POINT, DataMapper.objectToJson(request));
 		return DataMapper.jsonToObject(json, PostWithdrawsCoin.Response.class);
 	}
 
 	@Override
 	public PostWithdrawsKRW.Response postWithdrawsKRW(PostWithdrawsKRW.Request request) {
+		if(rateLimits.getOrDefault("default", 1) == 0)
+			return null;
 		String json = post(accessKey, secretKey, PostWithdrawsKRW.END_POINT, DataMapper.objectToJson(request));
 		return DataMapper.jsonToObject(json, PostWithdrawsKRW.Response.class);
 	}
 
 	@Override
 	public GetWithdrawsCoinAddresses.Response[] getWithdrawsCoinAddresses() {
+		if(rateLimits.getOrDefault("default", 1) == 0)
+			return null;
 		String json = get(accessKey, secretKey, GetWithdrawsCoinAddresses.END_POINT);
-		System.out.println(json);
 		return DataMapper.jsonToObject(json, GetWithdrawsCoinAddresses.Response[].class);
 	}
 

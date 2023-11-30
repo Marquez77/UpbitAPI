@@ -25,11 +25,15 @@ public class UpbitTest {
     private static final String ACCESS = "xZoiIXZ0e7QoKBWaXrwDstWL8q7YTE8NOLsAvmp8";
     private static final String SECRET = "bi6eDGD04jVaJ74iOmyhd6PJQ7rGWrx0d3OSJXlX";
 
-    public static void main(String[] args) {
-//        for (int i = 0; i < 100; i++) {
-//            GetMarketAll.Response[] response = UpbitAPI.QUOTATION.getMarketAll(GetMarketAll.Request.builder().isDetails(true).build());
-//            System.out.println(Arrays.toString(response));
-//        }
+    public static void main(String[] args) throws Exception {
+        for (int i = 1; i <= 100; i++) {
+            long start = System.currentTimeMillis();
+            GetMarketAll.Response[] response = UpbitAPI.QUOTATION.getMarketAll(GetMarketAll.Request.builder().isDetails(true).build());
+            long ms = System.currentTimeMillis()-start;
+            System.out.println(i + " " + ms + "ms " + Arrays.toString(response));
+            if(response == null) i--;
+            Thread.sleep(Math.max(0, 50-ms));
+        }
 //        GetMarketAll.Response[] response = UpbitAPI.QUOTATION.getMarketAll(GetMarketAll.Request.builder().isDetails(true).build());
 //        System.out.println(Arrays.toString(response));
 
@@ -89,18 +93,18 @@ public class UpbitTest {
 //        );
 //        System.out.println(Arrays.toString(response));
 
-        GetOrderBook.Response[] response = UpbitAPI.QUOTATION.getOrderBook(
-                GetOrderBook.Request.builder()
-                        .markets(new String[] { "KRW-BTC", "KRW-ETH" })
-                        .build()
-        );
-        for (GetOrderBook.Response res : response) {
-            System.out.println(res.market());
-            System.out.println(res.timestamp());
-            System.out.println(res.total_ask_size());
-            System.out.println(res.total_bid_size());
-            System.out.println(Arrays.toString(res.orderbook_units()));
-        }
+//        GetOrderBook.Response[] response = UpbitAPI.QUOTATION.getOrderBook(
+//                GetOrderBook.Request.builder()
+//                        .markets(new String[] { "KRW-BTC", "KRW-ETH" })
+//                        .build()
+//        );
+//        for (GetOrderBook.Response res : response) {
+//            System.out.println(res.market());
+//            System.out.println(res.timestamp());
+//            System.out.println(res.total_ask_size());
+//            System.out.println(res.total_bid_size());
+//            System.out.println(Arrays.toString(res.orderbook_units()));
+//        }
 
 
         UpbitAPI.Exchange api = UpbitAPI.createExchangeAPI(ACCESS, SECRET);
@@ -141,7 +145,7 @@ public class UpbitTest {
 
 //        DeleteOrder.Response response = api.deleteOrder(
 //                DeleteOrder.Request.builder()
-//                        .uuid(UUID.fromString("6d79a802-1fdb-4954-b24f-7706a718d1eb"))
+//                        .uuid(UUID.fromString("f5ed540b-0566-4484-a80c-ba25b273c599"))
 //                        .build()
 //        );
 //        System.out.println(response);
@@ -194,7 +198,7 @@ public class UpbitTest {
 //                PostWithdrawsCoin.Request.builder()
 //                        .currency("MBL")
 //                        .net_type("ONT")
-//                        .amount(new BigDecimal("200"))
+//                        .amount(new BigDecimal("172"))
 //                        .address("AQfs7bJQYfrG28jWb6dMMYktsSaWY5m2h8")
 //                        .transaction_type(WithdrawEnums.TransactionType.INTERNAL)
 //                        .build()
@@ -208,5 +212,7 @@ public class UpbitTest {
 //                        .build()
 //        );
 //        System.out.println(response);
+
+        System.exit(0);
     }
 }
