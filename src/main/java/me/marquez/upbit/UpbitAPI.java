@@ -13,6 +13,7 @@ import me.marquez.upbit.entity.quotation.market.GetMarketAll;
 import me.marquez.upbit.entity.quotation.trades.GetTradesTicks;
 import me.marquez.upbit.exception.UpbitAPIException;
 import me.marquez.upbit.internal.UpbitCore;
+import org.jetbrains.annotations.Nullable;
 
 public class UpbitAPI {
 
@@ -33,72 +34,72 @@ public class UpbitAPI {
         /**
          * 전체 계좌 조회
          * 내가 보유한 자산 리스트를 보여줍니다.
-         * @return 요청 결과
+         * @return 요청 결과 (요청 수가 제한되었을 경우 null 반환)
          */
-        GetAccounts.Response[] getAccounts() throws UpbitAPIException;
+        @Nullable GetAccounts.Response[] getAccounts() throws UpbitAPIException;
 
         /**
          * 주문 가능 정보
          * 마켓별 주문 가능 정보를 확인한다.
          * @param request 요청
-         * @return 요청 결과
+         * @return 요청 결과 (요청 수가 제한되었을 경우 null 반환)
          */
-        GetOrdersChance.Response getOrdersChance(GetOrdersChance.Request request) throws UpbitAPIException;
+        @Nullable GetOrdersChance.Response getOrdersChance(GetOrdersChance.Request request) throws UpbitAPIException;
 
         /**
          * 개별 주문 조회
          * 주문 UUID 를 통해 개별 주문 건을 조회한다.
          * @param request 요청
-         * @return 요청 결과
+         * @return 요청 결과 (요청 수가 제한되었을 경우 null 반환)
          */
-        GetOrder.Response getOrder(GetOrder.Request request) throws UpbitAPIException;
+        @Nullable GetOrder.Response getOrder(GetOrder.Request request) throws UpbitAPIException;
 
         /**
          * 주문 리스트 조회
          * 주문 리스트를 조회한다.
          * @param request 요청
-         * @return 요청 결과
+         * @return 요청 결과 (요청 수가 제한되었을 경우 null 반환)
          */
-        GetOrders.Response[] getOrders(GetOrders.Request request) throws UpbitAPIException;
+        @Nullable GetOrders.Response[] getOrders(GetOrders.Request request) throws UpbitAPIException;
 
         /**
          * 주문 취소 접수
          * 주문 UUID를 통해 해당 주문에 대한 취소 접수를 한다.
          * @param request 요청
-         * @return 요청 결과
+         * @return 요청 결과 (요청 수가 제한되었을 경우 null 반환)
          */
-        DeleteOrder.Response deleteOrder(DeleteOrder.Request request) throws UpbitAPIException;
+        @Nullable DeleteOrder.Response deleteOrder(DeleteOrder.Request request) throws UpbitAPIException;
 
         /**
          * 주문하기
          * 주문 요청을 한다.
          * @param request 요청
-         * @return 요청 결과
+         * @return 요청 결과 (요청 수가 제한되었을 경우 null 반환)
          */
-        PostOrders.Response postOrders(PostOrders.Request request) throws UpbitAPIException;
+        @Nullable PostOrders.Response postOrders(PostOrders.Request request) throws UpbitAPIException;
 
         /**
          * 출금 리스트 조회
          * @param request 요청
-         * @return 요청 결과
+         * @return 요청 결과 (요청 수가 제한되었을 경우 null 반환)
          */
-        GetWithdraws.Response[] getWithdraws(GetWithdraws.Request request) throws UpbitAPIException;
+        @Nullable GetWithdraws.Response[] getWithdraws(GetWithdraws.Request request) throws UpbitAPIException;
 
         /**
          * 개별 출금 조회
          * 출금 UUID를 통해 개별 출금 정보를 조회한다.
          * @param request 요청
-         * @return 요청 결과
+         * @return 요청 결과 (요청 수가 제한되었을 경우 null 반환)
          */
-        GetWithdraw.Response getWithdraw(GetWithdraw.Request request) throws UpbitAPIException;
+        @Nullable GetWithdraw.Response getWithdraw(GetWithdraw.Request request) throws UpbitAPIException;
 
         /**
          * 출금 가능 정보
          * 해당 통화의 가능한 출금 정보를 확인한다.
          * @param request 요청
-         * @return 요청 결과
+         * @return 요청 결과 (요청 수가 제한되었을 경우 null 반환)
          */
-        GetWithdrawsChance.Response getWithdrawsChance(GetWithdrawsChance.Request request) throws UpbitAPIException;
+        @Nullable GetWithdrawsChance.Response getWithdrawsChance(GetWithdrawsChance.Request request) throws UpbitAPIException;
 
         /**
          * 디지털 자산 출금하기
@@ -112,17 +113,17 @@ public class UpbitAPI {
          * 업비트 회원의 주소가 아닌 주소로 바로출금을 요청하는 경우, 출금이 정상적으로 수행되지 않습니다. 반드시 주소를 확인 후 출금을 진행하시기 바랍니다.
          *
          * @param request 요청
-         * @return 요청 결과
+         * @return 요청 결과 (요청 수가 제한되었을 경우 null 반환)
          */
-        PostWithdrawsCoin.Response postWithdrawsCoin(PostWithdrawsCoin.Request request) throws UpbitAPIException;
+        @Nullable PostWithdrawsCoin.Response postWithdrawsCoin(PostWithdrawsCoin.Request request) throws UpbitAPIException;
 
         /**
          * 원화 출금하기
          * 원화 출금을 요청한다. 등록된 출금 계좌로 출금된다.
          * @param request 요청
-         * @return 요청 결과
+         * @return 요청 결과 (요청 수가 제한되었을 경우 null 반환)
          */
-        PostWithdrawsKRW.Response postWithdrawsKRW(PostWithdrawsKRW.Request request) throws UpbitAPIException;
+        @Nullable PostWithdrawsKRW.Response postWithdrawsKRW(PostWithdrawsKRW.Request request) throws UpbitAPIException;
 
         /**
          * 출금 허용 주소 리스트 조회
@@ -132,9 +133,9 @@ public class UpbitAPI {
          * Open API를 통해 디지털 자산을 출금하기 위해서는 출금 허용 주소 등록이 필요합니다.
          * 등록은 업비트 웹 > [MY] > [Open API 관리] > [디지털 자산 출금주소 관리] 페이지에서 진행하실 수 있습니다.
          *
-         * @return 요청 결과
+         * @return 요청 결과 (요청 수가 제한되었을 경우 null 반환)
          */
-        GetWithdrawsCoinAddresses.Response[] getWithdrawsCoinAddresses() throws UpbitAPIException;
+        @Nullable GetWithdrawsCoinAddresses.Response[] getWithdrawsCoinAddresses() throws UpbitAPIException;
 
     }
 
@@ -150,60 +151,60 @@ public class UpbitAPI {
          * 마켓 코드 조회
          * 업비트에서 거래 가능한 마켓 목록
          * @param request 요청
-         * @return 요청 결과
+         * @return 요청 결과 (요청 수가 제한되었을 경우 null 반환)
          */
-        GetMarketAll.Response[] getMarketAll(GetMarketAll.Request request) throws UpbitAPIException;
+        @Nullable GetMarketAll.Response[] getMarketAll(GetMarketAll.Request request) throws UpbitAPIException;
 
         /**
          * 분(Minute) 캔들
          * @param unit      단위
          * @param request   요청
-         * @return          요청 결과
+         * @return          요청 결과 (요청 수가 제한되었을 경우 null 반환)
          */
-        GetCandlesMinutes.Response[] getCandlesMinutes(GetCandlesMinutes.Unit unit, GetCandlesMinutes.Request request) throws UpbitAPIException;
+        @Nullable GetCandlesMinutes.Response[] getCandlesMinutes(GetCandlesMinutes.Unit unit, GetCandlesMinutes.Request request) throws UpbitAPIException;
 
         /**
          * 일(Day) 캔들
          * @param request 요청
-         * @return 요청 결과
+         * @return 요청 결과 (요청 수가 제한되었을 경우 null 반환)
          */
-        GetCandlesDays.Response[] getCandlesDays(GetCandlesDays.Request request) throws UpbitAPIException;
+        @Nullable GetCandlesDays.Response[] getCandlesDays(GetCandlesDays.Request request) throws UpbitAPIException;
 
         /**
          * 주(Week) 캔들
          * @param request 요청
-         * @return 요청 결과
+         * @return 요청 결과 (요청 수가 제한되었을 경우 null 반환)
          */
-        GetCandlesWeeks.Response[] getCandlesWeeks(GetCandlesWeeks.Request request) throws UpbitAPIException;
+        @Nullable GetCandlesWeeks.Response[] getCandlesWeeks(GetCandlesWeeks.Request request) throws UpbitAPIException;
 
         /**
          * 월(Month) 캔들
          * @param request 요청
-         * @return 요청 결과
+         * @return 요청 결과 (요청 수가 제한되었을 경우 null 반환)
          */
-        GetCandlesMonths.Response[] getCandlesMonths(GetCandlesMonths.Request request) throws UpbitAPIException;
+        @Nullable GetCandlesMonths.Response[] getCandlesMonths(GetCandlesMonths.Request request) throws UpbitAPIException;
 
         /**
          * 최근 체결 내역
          * @param request 요청
-         * @return 요청 결과
+         * @return 요청 결과 (요청 수가 제한되었을 경우 null 반환)
          */
-        GetTradesTicks.Response[] getTradesTicks(GetTradesTicks.Request request) throws UpbitAPIException;
+        @Nullable GetTradesTicks.Response[] getTradesTicks(GetTradesTicks.Request request) throws UpbitAPIException;
 
         /**
          * 현재가 정보
          * 요청 당시 종목의 스냅샷을 반환한다.
          * @param request 요청
-         * @return 요청 결과
+         * @return 요청 결과 (요청 수가 제한되었을 경우 null 반환)
          */
-        GetTicker.Response[] getTicker(GetTicker.Request request) throws UpbitAPIException;
+        @Nullable GetTicker.Response[] getTicker(GetTicker.Request request) throws UpbitAPIException;
 
         /**
          * 호가 정보 조회
          * @param request 요청
-         * @return 요청 결과
+         * @return 요청 결과 (요청 수가 제한되었을 경우 null 반환)
          */
-        GetOrderBook.Response[] getOrderBook(GetOrderBook.Request request) throws UpbitAPIException;
+        @Nullable GetOrderBook.Response[] getOrderBook(GetOrderBook.Request request) throws UpbitAPIException;
     }
 
 

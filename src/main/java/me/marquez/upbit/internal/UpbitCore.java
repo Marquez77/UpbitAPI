@@ -25,6 +25,7 @@ import me.marquez.upbit.entity.quotation.market.GetMarketAll;
 import me.marquez.upbit.entity.quotation.trades.GetTradesTicks;
 import me.marquez.upbit.exception.UpbitAPIException;
 import org.apache.commons.collections4.MultiValuedMap;
+import org.apache.http.HeaderElement;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -41,9 +42,11 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -53,16 +56,8 @@ public class UpbitCore implements UpbitAPI.Exchange, UpbitAPI.Quotation {
 	private String accessKey;
 	private String secretKey;
 
-	private Bucket bucket;
-
-	public UpbitCore(String accessKey, String secretKey) {
-		Bandwidth limitPerSecond = Bandwidth.classic(8, Refill.greedy(8, Duration.ofSeconds(1)));
-		Bandwidth limitPerMinute = Bandwidth.classic(200, Refill.greedy(200, Duration.ofMinutes(1)));
-		this.bucket = Bucket.builder()
-				.addLimit(limitPerSecond)
-				.addLimit(limitPerMinute)
-				.build();
-	}
+	private final Map<String, Integer> rateLimits = new HashMap<>();
+	private final ScheduledExecutorService threadPool = Executors.newScheduledThreadPool(10);
 
 	/*
 	=============================================
@@ -131,6 +126,17 @@ public class UpbitCore implements UpbitAPI.Exchange, UpbitAPI.Quotation {
 			int statusCode = response.getStatusLine().getStatusCode();
 			HttpEntity entity = response.getEntity();
 			String result = EntityUtils.toString(entity, "UTF-8");
+			if(response.containsHeader("Remaining-Req")) {
+				HeaderElement element = response.getHeaders("Remaining-Req")[0].getElements()[0];
+				String group = element.getValue();
+				int limitForMinutes = Integer.parseInt(element.getParameterByName("min").getValue());
+				int limitForSeconds = Integer.parseInt(element.getParameterByName("sec").getValue());
+				System.out.println(group + " " + limitForMinutes + " " + limitForSeconds);
+				rateLimits.put(group, Math.min(limitForMinutes, limitForSeconds));
+				threadPool.schedule(() -> {
+					rateLimits.remove(group);
+				}, 200L, TimeUnit.MILLISECONDS);
+			}
 			if (statusCode == 200 || statusCode == 201) {
 				return result;
 			} else {
@@ -138,12 +144,12 @@ public class UpbitCore implements UpbitAPI.Exchange, UpbitAPI.Quotation {
 					JsonObject error = JsonParser.parseString(result).getAsJsonObject().get("error").getAsJsonObject();
 					throw new UpbitAPIException(error.get("name").getAsString(), error.get("message").getAsString());
 				}
-				throw new UpbitAPIException(result);
+				throw new UpbitAPIException(statusCode+"", response.getStatusLine().getReasonPhrase());
 			}
 		}catch(UnsupportedEncodingException | NoSuchAlgorithmException e) {
 			throw new RuntimeException(e);
 		}catch(IOException e) {
-			UpbitAPIException ex = new UpbitAPIException("");
+			UpbitAPIException ex = new UpbitAPIException("IOException", e.getMessage());
 			ex.initCause(e);
 			throw ex;
 		}
@@ -265,48 +271,64 @@ public class UpbitCore implements UpbitAPI.Exchange, UpbitAPI.Quotation {
 	*/
 	@Override
 	public GetMarketAll.Response[] getMarketAll(GetMarketAll.Request request) {
+		if(rateLimits.getOrDefault("market", 1) == 0)
+			return null;
 		String json = get(GetMarketAll.END_POINT, DataMapper.objectToJson(request));
 		return DataMapper.jsonToObject(json, GetMarketAll.Response[].class);
 	}
 
 	@Override
 	public GetCandlesMinutes.Response[] getCandlesMinutes(GetCandlesMinutes.Unit unit, GetCandlesMinutes.Request request) {
+		if(rateLimits.getOrDefault("candles", 1) == 0)
+			return null;
 		String json = get(GetCandlesMinutes.END_POINT + "/" + unit.getUnit(), DataMapper.objectToJson(request));
 		return DataMapper.jsonToObject(json, GetCandlesMinutes.Response[].class);
 	}
 
 	@Override
 	public GetCandlesDays.Response[] getCandlesDays(GetCandlesDays.Request request) {
+		if(rateLimits.getOrDefault("candles", 1) == 0)
+			return null;
 		String json = get(GetCandlesDays.END_POINT, DataMapper.objectToJson(request));
 		return DataMapper.jsonToObject(json, GetCandlesDays.Response[].class);
 	}
 
 	@Override
 	public GetCandlesWeeks.Response[] getCandlesWeeks(GetCandlesWeeks.Request request) {
+		if(rateLimits.getOrDefault("candles", 1) == 0)
+			return null;
 		String json = get(GetCandlesWeeks.END_POINT, DataMapper.objectToJson(request));
 		return DataMapper.jsonToObject(json, GetCandlesWeeks.Response[].class);
 	}
 
 	@Override
 	public GetCandlesMonths.Response[] getCandlesMonths(GetCandlesMonths.Request request) {
+		if(rateLimits.getOrDefault("candles", 1) == 0)
+			return null;
 		String json = get(GetCandlesMonths.END_POINT, DataMapper.objectToJson(request));
 		return DataMapper.jsonToObject(json, GetCandlesMonths.Response[].class);
 	}
 
 	@Override
 	public GetTradesTicks.Response[] getTradesTicks(GetTradesTicks.Request request) {
+		if(rateLimits.getOrDefault("crix-trades", 1) == 0)
+			return null;
 		String json = get(GetTradesTicks.END_POINT, DataMapper.objectToJson(request));
 		return DataMapper.jsonToObject(json, GetTradesTicks.Response[].class);
 	}
 
 	@Override
 	public GetTicker.Response[] getTicker(GetTicker.Request request) {
+		if(rateLimits.getOrDefault("ticker", 1) == 0)
+			return null;
 		String json = get(GetTicker.END_POINT, DataMapper.objectToJson(request));
 		return DataMapper.jsonToObject(json, GetTicker.Response[].class);
 	}
 
 	@Override
 	public GetOrderBook.Response[] getOrderBook(GetOrderBook.Request request) {
+		if(rateLimits.getOrDefault("orderbook", 1) == 0)
+			return null;
 		String json = get(GetOrderBook.END_POINT, DataMapper.objectToJson(request));
 		return DataMapper.jsonToObject(json, GetOrderBook.Response[].class);
 	}

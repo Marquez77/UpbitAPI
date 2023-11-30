@@ -10,10 +10,6 @@ public class UpbitAPIException extends RuntimeException {
     private String name;
     private String message;
 
-    public UpbitAPIException(String result) {
-        super("Unknown upbit api exception. (response body: " + result + ")");
-    }
-
     public UpbitAPIException(String name, String message) {
         super(name + ": " + message);
         this.name = name;

@@ -22,10 +22,14 @@ import java.util.UUID;
 
 public class UpbitTest {
 
-    private static final String ACCESS = "";
-    private static final String SECRET = "";
+    private static final String ACCESS = "xZoiIXZ0e7QoKBWaXrwDstWL8q7YTE8NOLsAvmp8";
+    private static final String SECRET = "bi6eDGD04jVaJ74iOmyhd6PJQ7rGWrx0d3OSJXlX";
 
     public static void main(String[] args) {
+//        for (int i = 0; i < 100; i++) {
+//            GetMarketAll.Response[] response = UpbitAPI.QUOTATION.getMarketAll(GetMarketAll.Request.builder().isDetails(true).build());
+//            System.out.println(Arrays.toString(response));
+//        }
 //        GetMarketAll.Response[] response = UpbitAPI.QUOTATION.getMarketAll(GetMarketAll.Request.builder().isDetails(true).build());
 //        System.out.println(Arrays.toString(response));
 
@@ -85,18 +89,18 @@ public class UpbitTest {
 //        );
 //        System.out.println(Arrays.toString(response));
 
-//        GetOrderBook.Response[] response = UpbitAPI.QUOTATION.getOrderBook(
-//                GetOrderBook.Request.builder()
-//                        .markets(new String[] { "KRW-BTC", "KRW-ETH" })
-//                        .build()
-//        );
-//        for (GetOrderBook.Response res : response) {
-//            System.out.println(res.market());
-//            System.out.println(res.timestamp());
-//            System.out.println(res.total_ask_size());
-//            System.out.println(res.total_bid_size());
-//            System.out.println(Arrays.toString(res.orderbook_units()));
-//        }
+        GetOrderBook.Response[] response = UpbitAPI.QUOTATION.getOrderBook(
+                GetOrderBook.Request.builder()
+                        .markets(new String[] { "KRW-BTC", "KRW-ETH" })
+                        .build()
+        );
+        for (GetOrderBook.Response res : response) {
+            System.out.println(res.market());
+            System.out.println(res.timestamp());
+            System.out.println(res.total_ask_size());
+            System.out.println(res.total_bid_size());
+            System.out.println(Arrays.toString(res.orderbook_units()));
+        }
 
 
         UpbitAPI.Exchange api = UpbitAPI.createExchangeAPI(ACCESS, SECRET);
