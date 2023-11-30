@@ -5,6 +5,10 @@ import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import io.github.bucket4j.Bandwidth;
+import io.github.bucket4j.Bucket;
+import io.github.bucket4j.Bucket4j;
+import io.github.bucket4j.Refill;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import me.marquez.upbit.UpbitAPI;
@@ -36,6 +40,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.UUID;
@@ -47,6 +52,17 @@ public class UpbitCore implements UpbitAPI.Exchange, UpbitAPI.Quotation {
 
 	private String accessKey;
 	private String secretKey;
+
+	private Bucket bucket;
+
+	public UpbitCore(String accessKey, String secretKey) {
+		Bandwidth limitPerSecond = Bandwidth.classic(8, Refill.greedy(8, Duration.ofSeconds(1)));
+		Bandwidth limitPerMinute = Bandwidth.classic(200, Refill.greedy(200, Duration.ofMinutes(1)));
+		this.bucket = Bucket.builder()
+				.addLimit(limitPerSecond)
+				.addLimit(limitPerMinute)
+				.build();
+	}
 
 	/*
 	=============================================
