@@ -128,7 +128,6 @@ public class UpbitCore implements UpbitAPI.Exchange, UpbitAPI.Quotation {
 				String group = element.getValue();
 				int limitForMinutes = Integer.parseInt(element.getParameterByName("min").getValue());
 				int limitForSeconds = Integer.parseInt(element.getParameterByName("sec").getValue());
-				System.out.println(group + " " + limitForMinutes + " " + limitForSeconds);
 				rateLimits.put(group, Math.min(limitForMinutes, limitForSeconds));
 				threadPool.schedule(() -> {
 					rateLimits.remove(group);
