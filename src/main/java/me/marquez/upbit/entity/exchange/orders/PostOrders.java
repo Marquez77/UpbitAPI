@@ -35,8 +35,8 @@ public class PostOrders {
     public record Request(
             @NonNull String market,
             @NonNull OrderEnums.Side side,
-            @NonNull BigDecimal volume,
-            @NonNull BigDecimal price,
+            @Nullable BigDecimal volume,
+            @Nullable BigDecimal price,
             @NonNull OrderEnums.OrderType ord_type,
             @Nullable String identifier
     ) {}
