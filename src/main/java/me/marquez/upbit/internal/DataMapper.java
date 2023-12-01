@@ -61,6 +61,7 @@ public class DataMapper {
         }).registerTypeAdapter(OffsetDateTime.class, new JsonDeserializer<OffsetDateTime>() {
             private final DateTimeFormatter dateTimeFormatter = new DateTimeFormatterBuilder()
                     .appendPattern("yyyy-MM-dd'T'HH:mm:ss")
+                    .appendFraction(ChronoField.NANO_OF_SECOND, 0, 6, true)
                     .optionalStart()
                     .appendOffset("+HH:mm", "Z")
                     .optionalEnd()
