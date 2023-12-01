@@ -59,7 +59,7 @@ public class PostOrders {
      * @param trades_count      해당 주문에 걸린 체결 수
      */
     public record Response(
-            UUID uuid,
+            String uuid,
             OrderEnums.Side side,
             OrderEnums.OrderType ord_type,
             BigDecimal price,

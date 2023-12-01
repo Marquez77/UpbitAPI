@@ -1,14 +1,11 @@
 package me.marquez.upbit.entity.exchange.orders;
 
 import lombok.Builder;
-import lombok.ToString;
 import me.marquez.upbit.entity.enums.OrderEnums;
 import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.Date;
-import java.util.UUID;
 
 /**
  * 주문 취소 접수
@@ -25,8 +22,8 @@ public class DeleteOrder {
      */
     @Builder
     public record Request(
-            @Nullable UUID uuid,
-            @Nullable UUID identifier
+            @Nullable String uuid,
+            @Nullable String identifier
     ) {}
 
     /**
@@ -47,7 +44,7 @@ public class DeleteOrder {
      * @param trades_count      해당 주문에 걸린 체결 수
      */
     public record Response(
-            UUID uuid,
+            String uuid,
             OrderEnums.Side side,
             OrderEnums.OrderType ord_type,
             BigDecimal price,

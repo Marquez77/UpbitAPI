@@ -127,13 +127,13 @@ public class UpbitTest {
 //        );
 //        System.out.println(response);
 
-//        GetOrders.Response[] response = api.getOrders(
-//                GetOrders.Request.builder()
-//                        .market("KRW-BTC")
-//                        .state(OrderEnums.State.WAIT)
-//                        .build()
-//        );
-//        System.out.println(Arrays.toString(response));
+        GetOrders.Response[] response = api.getOrders(
+                GetOrders.Request.builder()
+                        .market("KRW-BTC")
+                        .state(OrderEnums.State.DONE)
+                        .build()
+        );
+        System.out.println(Arrays.toString(response));
 
 //        DeleteOrder.Response response = api.deleteOrder(
 //                DeleteOrder.Request.builder()

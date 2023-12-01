@@ -7,8 +7,8 @@ import java.math.BigDecimal;
 
 public class MarketPriceOrderTest {
 
-    private static final String ACCESS = "xZoiIXZ0e7QoKBWaXrwDstWL8q7YTE8NOLsAvmp8";
-    private static final String SECRET = "bi6eDGD04jVaJ74iOmyhd6PJQ7rGWrx0d3OSJXlX";
+    private static final String ACCESS = "";
+    private static final String SECRET = "";
 
     public static void main(String[] args) {
 

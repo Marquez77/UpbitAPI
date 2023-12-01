@@ -1,14 +1,12 @@
 package me.marquez.upbit.entity.exchange.orders;
 
-import lombok.*;
+import lombok.Builder;
 import me.marquez.upbit.entity.enums.OrderBy;
 import me.marquez.upbit.entity.enums.OrderEnums;
 import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.Date;
-import java.util.UUID;
 
 /**
  * 주문 리스트 조회
@@ -37,8 +35,8 @@ public class GetOrders {
     @Builder
     public record Request(
             @Nullable String market,
-            @Nullable UUID[] uuids,
-            @Nullable UUID[] identifiers,
+            @Nullable String[] uuids,
+            @Nullable String[] identifiers,
             @Nullable OrderEnums.State state,
             @Nullable OrderEnums.State[] states,
             @Nullable Integer page,
@@ -64,7 +62,7 @@ public class GetOrders {
      * @param trades_count      해당 주문에 걸린 체결 수
      */
     public record Response(
-            UUID uuid,
+            String uuid,
             OrderEnums.Side side,
             OrderEnums.OrderType ord_type,
             BigDecimal price,

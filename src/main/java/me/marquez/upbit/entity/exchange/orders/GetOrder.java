@@ -1,15 +1,12 @@
 package me.marquez.upbit.entity.exchange.orders;
 
 import lombok.Builder;
-import lombok.ToString;
 import me.marquez.upbit.entity.enums.OrderEnums;
 import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * 개별 주문 조회
@@ -26,8 +23,8 @@ public class GetOrder {
      */
     @Builder
     public record Request(
-            @Nullable UUID uuid,
-            @Nullable UUID identifier
+            @Nullable String uuid,
+            @Nullable String identifier
     ) {}
     
     /**
@@ -49,7 +46,7 @@ public class GetOrder {
      * @param trades           체결
      */
     public record Response(
-            UUID uuid,
+            String uuid,
             OrderEnums.Side side,
             OrderEnums.OrderType ord_type,
             BigDecimal price,
@@ -77,7 +74,7 @@ public class GetOrder {
          */
         public record Trade(
                 String market,
-                UUID uuid,
+                String uuid,
                 BigDecimal price,
                 BigDecimal volume,
                 BigDecimal funds,
