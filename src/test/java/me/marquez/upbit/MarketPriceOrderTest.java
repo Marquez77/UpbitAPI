@@ -1,6 +1,7 @@
 package me.marquez.upbit;
 
 import me.marquez.upbit.entity.enums.OrderEnums;
+import me.marquez.upbit.entity.exchange.orders.GetOrder;
 import me.marquez.upbit.entity.exchange.orders.PostOrders;
 
 import java.math.BigDecimal;
@@ -27,14 +28,19 @@ public class MarketPriceOrderTest {
         // 매도
 //        PostOrders.Response response = api.postOrders(
 //                PostOrders.Request.builder()
-//                        .market("BTC-AUCTION")
+//                        .market("BTC-INJ")
 //                        .side(OrderEnums.Side.ASK)
-//                        .volume(new BigDecimal("2.77792367"))
+//                        .volume(new BigDecimal("1.30361914"))
 //                        .ord_type(OrderEnums.OrderType.MARKET)
 //                        .build()
 //        );
+        var response = api.getOrder(
+                GetOrder.Request.builder()
+                        .uuid("1758e8da-95e3-4ae3-9d9d-14617f49fae7")
+                        .build()
+        );
 
-//        System.out.println(response);
+        System.out.println(response);
 
     }
 }
