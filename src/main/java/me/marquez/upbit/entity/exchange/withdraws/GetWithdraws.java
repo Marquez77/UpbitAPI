@@ -1,14 +1,12 @@
 package me.marquez.upbit.entity.exchange.withdraws;
 
 import lombok.Builder;
-import lombok.ToString;
 import me.marquez.upbit.entity.enums.OrderBy;
 import me.marquez.upbit.entity.enums.WithdrawEnums;
 import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.Date;
 import java.util.UUID;
 
 /**
