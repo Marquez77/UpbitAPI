@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.ToString;
+import me.marquez.upbit.entity.enums.TwoFactorType;
 import me.marquez.upbit.entity.enums.WithdrawEnums;
 import org.jetbrains.annotations.Nullable;
 
@@ -29,28 +30,7 @@ public class PostWithdrawsKRW {
     public record Request(
             @NonNull BigDecimal amount,
             @NonNull TwoFactorType two_factor_type
-    ) {
-        @AllArgsConstructor
-        public enum TwoFactorType {
-            /**
-             * 카카오 인증
-             */
-            @SerializedName("kakao")
-            KAKAO,
-
-            /**
-             * 카카오 페이 인증
-             */
-            @SerializedName("kakao_pay")
-            @Deprecated KAKAO_PAY,
-
-            /**
-             * 네이버 인증
-             */
-            @SerializedName("naver")
-            NAVER;
-        }
-    }
+    ) {}
 
     /**
      * @param type              입출금 종류
