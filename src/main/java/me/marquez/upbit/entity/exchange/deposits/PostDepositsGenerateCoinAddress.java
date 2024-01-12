@@ -29,16 +29,19 @@ public class PostDepositsGenerateCoinAddress {
     /**
      * @param success            요청 성공 여부
      * @param message            요청 결과 메시지
-     *
+     */
+    public record Response1(
+            @Nullable boolean success,
+            @Nullable String message
+    ) {}
+
+    /**
      * @param currency           화폐를 의미하는 영문 대문자 코드
      * @param net_type           입금 네트워크
      * @param deposit_address    입금 주소
      * @param secondary_address  2차 입금 주소
      */
-    public record Response(
-            @Nullable boolean success,
-            @Nullable String message,
-
+    public record Response2(
             @Nullable String currency,
             @Nullable String net_type,
             @Nullable String deposit_address,
