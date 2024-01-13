@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import me.marquez.upbit.UpbitAPI;
 import me.marquez.upbit.entity.exchange.accounts.GetAccounts;
+import me.marquez.upbit.entity.exchange.deposits.*;
 import me.marquez.upbit.entity.exchange.orders.*;
 import me.marquez.upbit.entity.exchange.withdraws.*;
 import me.marquez.upbit.entity.quotation.GetOrderBook;
@@ -29,6 +30,7 @@ import org.apache.http.client.methods.*;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -281,6 +283,51 @@ public class UpbitCore implements UpbitAPI.Exchange, UpbitAPI.Quotation {
 			return null;
 		String json = get(accessKey, secretKey, GetWithdrawsCoinAddresses.END_POINT);
 		return DataMapper.jsonToObject(json, GetWithdrawsCoinAddresses.Response[].class);
+	}
+
+	@Nullable
+	@Override
+	public GetDeposit.Response getDeposit(GetDeposit.Request request) throws UpbitAPIException {
+		if(rateLimits.getOrDefault("default", 1) == 0)
+			return null;
+		String json = get(accessKey, secretKey, GetDeposit.END_POINT);
+		return DataMapper.jsonToObject(json, GetDeposit.Response.class);
+	}
+
+	@Nullable
+	@Override
+	public GetDeposits.Response[] getDeposits(GetDeposits.Request request) throws UpbitAPIException {
+		if(rateLimits.getOrDefault("default", 1) == 0)
+			return null;
+		String json = get(accessKey, secretKey, GetDeposits.END_POINT);
+		return DataMapper.jsonToObject(json, GetDeposits.Response[].class);
+	}
+
+	@Nullable
+	@Override
+	public GetDepositsCoinAddress.Response getDepositsCoinAddress(GetDepositsCoinAddress.Request request) throws UpbitAPIException {
+		if(rateLimits.getOrDefault("default", 1) == 0)
+			return null;
+		String json = get(accessKey, secretKey, GetDepositsCoinAddress.END_POINT);
+		return DataMapper.jsonToObject(json, GetDepositsCoinAddress.Response.class);
+	}
+
+	@Nullable
+	@Override
+	public GetDepositsCoinAddresses.Response[] getDepositsCoinAddresses() throws UpbitAPIException {
+		return new GetDepositsCoinAddresses.Response[0];
+	}
+
+	@Nullable
+	@Override
+	public Object postDepositsGenerateCoinAddress(PostDepositsGenerateCoinAddress.Request request) throws UpbitAPIException {
+		return null;
+	}
+
+	@Nullable
+	@Override
+	public PostDepositsKRW.Response postDepositsKRW(PostDepositsKRW.Request request) throws UpbitAPIException {
+		return null;
 	}
 
 
