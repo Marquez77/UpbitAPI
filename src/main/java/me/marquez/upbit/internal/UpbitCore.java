@@ -46,6 +46,7 @@ import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -315,13 +316,22 @@ public class UpbitCore implements UpbitAPI.Exchange, UpbitAPI.Quotation {
 	@Nullable
 	@Override
 	public GetDepositsCoinAddresses.Response[] getDepositsCoinAddresses() throws UpbitAPIException {
-		return new GetDepositsCoinAddresses.Response[0];
+		if(rateLimits.getOrDefault("default", 1) == 0)
+			return null;
+		String json = get(accessKey, secretKey, GetDepositsCoinAddresses.END_POINT);
+		return DataMapper.jsonToObject(json, GetDepositsCoinAddresses.Response[].class);
 	}
 
 	@Nullable
 	@Override
 	public Object postDepositsGenerateCoinAddress(PostDepositsGenerateCoinAddress.Request request) throws UpbitAPIException {
-		return null;
+		if(rateLimits.getOrDefault("default", 1) == 0)
+			return null;
+		String json = post(accessKey, secretKey, PostDepositsGenerateCoinAddress.END_POINT);
+		return Stream.concat(
+				Stream.ofNullable((Object)DataMapper.jsonToObject(json, PostDepositsGenerateCoinAddress.Response1.class)),
+				Stream.ofNullable((Object)DataMapper.jsonToObject(json, PostDepositsGenerateCoinAddress.Response2.class))
+		).findFirst().orElse(null);
 	}
 
 	@Nullable
